@@ -5,7 +5,7 @@ class Solution(object):
         :rtype: List[List[str]]
         """
 
-        answer = [[]]
+
         seen = {}
         for i in range(len(strs)):
             current = {}
