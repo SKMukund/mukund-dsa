@@ -16,10 +16,10 @@ class Solution(object):
         
         while stack:
             next_map[stack.pop()] = -1
-        
+
         for num in nums1:
             result.append(next_map[num])
-
+        
         return result
     
 
