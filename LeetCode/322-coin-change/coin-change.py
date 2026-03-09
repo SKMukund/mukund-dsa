@@ -5,6 +5,7 @@ class Solution(object):
         :type amount: int
         :rtype: int
         """
+
         dp = [amount + 1] * (amount + 1)
 
         dp[0] = 0
@@ -14,7 +15,7 @@ class Solution(object):
                 remaining = i - coin
                 if remaining >= 0:
                     dp[i] = min(dp[i], dp[remaining] + 1)
-
+        
         if dp[amount] > amount:
             return -1
         return dp[amount]
