@@ -5,23 +5,28 @@ class Solution(object):
         :type nums2: List[int]
         :rtype: List[int]
         """
+
         stack = []
-        result = []
-        next_map = {}
-        for num in nums2:
-            while stack and num > stack[-1]:
-                prev = stack.pop()
-                next_map[prev] = num
-            stack.append(num)
-        
-        while stack:
-            next_map[stack.pop()] = -1
+        seen = {}
+        result = [-1] * (len(nums1))
 
         for num in nums1:
-            result.append(next_map[num])
-        
-        return result
-    
+            if num in seen:
+                seen[num] += 1
+            else:
+                seen[num] = 1
 
+        for i in range(len(nums2)):
+            while stack and nums2[i] > nums2[stack[-1]]:
+                prev = stack.pop()
+                for j in range(len(nums1)):
+                    if nums1[j] == nums2[prev]:
+                        result[j] = nums2[i]
+
+            
+            stack.append(i)
+        
+
+        return result
 
         
