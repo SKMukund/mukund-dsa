@@ -8,24 +8,20 @@ class Solution(object):
 
         stack = []
         seen = {}
-        result = [-1] * (len(nums1))
-
-        for num in nums1:
-            if num in seen:
-                seen[num] += 1
-            else:
-                seen[num] = 1
+        result = []
 
         for i in range(len(nums2)):
             while stack and nums2[i] > nums2[stack[-1]]:
                 prev = stack.pop()
-                for j in range(len(nums1)):
-                    if nums1[j] == nums2[prev]:
-                        result[j] = nums2[i]
+                seen[nums2[prev]] = nums2[i]
 
-            
             stack.append(i)
         
+        for i in range(len(stack)):
+            seen[nums2[stack[i]]] = -1
+
+        for num in nums1:
+            result.append(seen[num])
 
         return result
 
