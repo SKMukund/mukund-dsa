@@ -10,19 +10,26 @@ class Solution(object):
         
         rows = len(image)
         cols = len(image[0])
+        start = image[sr][sc]
 
-        def dfs(r, c, og):
-            if r < 0 or c < 0 or r >= rows or c >= cols:
-                return
-            if image[r][c] != og or image[r][c] == color:
-                return
+        if start == color:
+            return image
 
+        q = deque([(sr, sc)])
+        dirs = [[1,0],[-1,0],[0,1],[0,-1]]
+
+        while q:
+            r, c = q.popleft()
             image[r][c] = color
 
-            dfs(r + 1,c, og)
-            dfs(r - 1,c, og)
-            dfs(r,c + 1, og)
-            dfs(r,c - 1, og)
-        
-        dfs(sr, sc, image[sr][sc])
+            for dr, dc in dirs:
+                nr = r + dr
+                nc = c + dc
+
+                if 0 <= nr < rows and 0 <= nc < cols and image[nr][nc] == start:
+                    q.append((nr,nc))
+
         return image
+        
+
+        
