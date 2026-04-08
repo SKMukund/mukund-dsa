@@ -11,13 +11,12 @@ class Solution(object):
         rows = len(image)
         cols = len(image[0])
         start = image[sr][sc]
+        q = deque([(sr,sc)])
 
         if start == color:
             return image
-
-        q = deque([(sr, sc)])
+        
         dirs = [[1,0],[-1,0],[0,1],[0,-1]]
-
         while q:
             r, c = q.popleft()
             image[r][c] = color
@@ -27,9 +26,8 @@ class Solution(object):
                 nc = c + dc
 
                 if 0 <= nr < rows and 0 <= nc < cols and image[nr][nc] == start:
-                    q.append((nr,nc))
-
+                    image[nr][nc] = color
+                    q.append((nr, nc))
         return image
-        
 
-        
+            
