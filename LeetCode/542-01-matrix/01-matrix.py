@@ -8,7 +8,6 @@ class Solution(object):
         row = len(mat)
         col = len(mat[0])
         q = deque()
-        new_mat=[[]]
 
         for r in range(row):
             for c in range(col):
@@ -29,6 +28,7 @@ class Solution(object):
                 if 0 <= nr < row and 0 <= nc < col and mat[nr][nc] == -1:
                     q.append((nr, nc))
                     mat[nr][nc] = mat[r][c] + 1
+
         return mat
 
 
