@@ -29,8 +29,8 @@ python/
 └── backtracking/             # Constraint-based search and pruning
 ```
 
-Each problem lives in its own folder named `XXXX_problem_name/` containing:
-- `XXXX_problem_name.py` — the solution
+Each problem lives in its own folder using the original LeetSync naming convention, e.g. `1-two-sum/`, containing:
+- `two-sum.py` — the solution (LeetSync-generated filename)
 - `README.md` — the original problem statement
 
 ---
@@ -97,7 +97,7 @@ Each problem lives in its own folder named `XXXX_problem_name/` containing:
 | 0198 | House Robber | Medium |
 | 0213 | House Robber II | Medium |
 | 0322 | Coin Change | Medium |
-| 0509 | Fibonacci Number | Easy |
+| 1013 | Fibonacci Number | Easy |
 | 0747 | Min Cost Climbing Stairs | Easy |
 | 1236 | N-th Tribonacci Number | Easy |
 
@@ -120,14 +120,14 @@ Each problem lives in its own folder named `XXXX_problem_name/` containing:
 ## Naming Convention
 
 ```
-python/{topic}/XXXX_problem_name/
-    XXXX_problem_name.py   # solution
-    README.md              # problem statement
+python/{topic}/{N}-{problem-name}/
+    {problem-name}.py   # solution (LeetSync-generated)
+    README.md           # problem statement (LeetSync-generated)
 ```
 
-- Problem numbers are zero-padded to 4 digits for consistent sorting.
-- Folder and file names use `lowercase_snake_case`.
-- Topics map to standard interview-prep categories (Blind 75 / NeetCode style).
+- Folder and file names preserve the original LeetSync format: `{number}-{kebab-case-name}`.
+- Topic folders use `lowercase_snake_case` and are the only layer added on top of LeetSync output.
+- New problems synced by LeetSync drop into the correct topic folder with no renaming needed.
 
 ---
 
