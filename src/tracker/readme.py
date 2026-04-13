@@ -15,6 +15,7 @@ or at the end of the file if no suitable insertion point is found.
 from __future__ import annotations
 
 import datetime
+import re
 from pathlib import Path
 
 from src.reorganizer.models import Problem
@@ -31,6 +32,9 @@ _DIFFICULTY_ORDER = ["Easy", "Medium", "Hard"]
 def update_readme(readme_path: Path, problems: list[Problem], recent_n: int = 5) -> bool:
     """Rewrite the tracker section of README.md.
 
+    Also updates the problem count in the introduction line if present,
+    keeping it consistent with the tracker total without requiring manual edits.
+
     Args:
         readme_path: Path to the README.md file.
         problems:    Full list of Problem objects.
@@ -40,15 +44,41 @@ def update_readme(readme_path: Path, problems: list[Problem], recent_n: int = 5)
         True if the file was changed, False if it was already up-to-date.
     """
     original = readme_path.read_text()
+    total = len(problems)
+
     text = _ensure_markers(original)
     tracker_block = _render_tracker(problems, recent_n)
-    updated = _inject(text, tracker_block)
+    text = _inject(text, tracker_block)
+    text = _update_intro_count(text, total)
 
-    if updated == original:
+    if text == original:
         return False
 
-    readme_path.write_text(updated)
+    readme_path.write_text(text)
     return True
+
+
+# ---------------------------------------------------------------------------
+# Introduction count
+# ---------------------------------------------------------------------------
+
+# Matches the dynamic count line in the introduction, e.g.:
+#   **46 problems solved across core algorithmic patterns (automatically tracked and updated).**
+_INTRO_COUNT_RE = re.compile(
+    r"\*\*\d+ problems solved across core algorithmic patterns"
+)
+
+
+def _update_intro_count(readme: str, total: int) -> str:
+    """Replace the problem count in the introduction line with the current total.
+
+    Only touches lines matching the introduction count pattern — never modifies
+    anything inside the tracker markers or any other section.
+    """
+    return _INTRO_COUNT_RE.sub(
+        f"**{total} problems solved across core algorithmic patterns",
+        readme,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -101,8 +131,9 @@ def _render_tracker(problems: list[Problem], recent_n: int) -> str:
     ]
     diff_str = " · ".join(diff_parts)
 
-    lines.append(f"**{stats['total']} problems solved** &nbsp;|&nbsp; {langs} &nbsp;|&nbsp; {diff_str}")
-    lines.append(f"*Last updated: {now}*")
+    lines.append(f"**{stats['total']} problems solved** ({langs})  ")
+    lines.append(f"**Difficulty:** {diff_str}  ")
+    lines.append(f"**Last updated:** {now}")
     lines.append("")
 
     # ── Difficulty breakdown table ────────────────────────────────────────
