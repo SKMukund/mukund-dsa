@@ -97,7 +97,7 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 0198 | House Robber | Medium |
 | 0213 | House Robber II | Medium |
 | 0322 | Coin Change | Medium |
-| 1013 | Fibonacci Number | Easy |
+| 509 | Fibonacci Number | Easy |
 | 0747 | Min Cost Climbing Stairs | Easy |
 | 1236 | N-th Tribonacci Number | Easy |
 
