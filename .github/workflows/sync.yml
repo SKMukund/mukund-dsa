@@ -1,0 +1,51 @@
+name: Sync LeetCode Tracker
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      # Only run when actual solution files change (LeetSync commits)
+      - "python/**"
+  workflow_dispatch:  # Allow manual trigger from the Actions tab
+
+permissions:
+  contents: write  # needed to commit back README changes
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so git log --follow works for history preservation
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run organizer + tracker
+        run: |
+          python scripts/run.py --no-organized
+          # Note: --no-organized skips copying files into organized/ in CI.
+          # The organized/ directory is .gitignored by default (it's a generated view).
+          # To commit organized/ as well, remove --no-organized and remove organized/
+          # from .gitignore.
+
+      - name: Commit README changes (if any)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage only the README — never stage python/ or other raw files
+          git add README.md
+
+          if git diff --cached --quiet; then
+            echo "No README changes to commit."
+          else
+            git commit -m "chore: update tracker — $(date -u +'%Y-%m-%d')"
+            git push origin HEAD
+          fi

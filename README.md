@@ -2,10 +2,6 @@
 
 A complete log of my LeetCode practice, organized by language and algorithmic topic. Every problem I have solved is tracked here — this is a progress log, not a curated highlight reel.
 
-**46 problems solved** | Python | Ongoing
-
----
-
 ## Purpose
 
 This repository serves two goals simultaneously:
@@ -35,14 +31,26 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 
 ---
 
-## Problems by Topic
+## Progress
 
-### Arrays & Hashing — 9 problems
+<!-- TRACKER_START -->
+**46 problems solved** &nbsp;|&nbsp; Python &nbsp;|&nbsp; 18 Easy · 26 Medium · 2 Hard
+*Last updated: 2026-04-13*
+
+| Easy | Medium | Hard | Total |
+|------|--------|------|-------|
+| 18 | 26 | 2 | 46 |
+
+### Problems by Topic
+
+<details>
+<summary><strong>Arrays & Hashing</strong> — 9 problems</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0001 | Two Sum | Easy |
 | 0049 | Group Anagrams | Medium |
-| 0121 | Best Time to Buy and Sell Stock | Easy |
+| 0121 | Best Time to Buy and Sell Stock | Medium |
 | 0164 | Maximum Gap | Hard |
 | 0217 | Contains Duplicate | Easy |
 | 0238 | Product of Array Except Self | Medium |
@@ -50,7 +58,11 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 0451 | Sort Characters by Frequency | Medium |
 | 0837 | Most Common Word | Easy |
 
-### Two Pointers — 6 problems
+</details>
+
+<details>
+<summary><strong>Two Pointers</strong> — 6 problems</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0011 | Container With Most Water | Medium |
@@ -60,7 +72,11 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 0167 | Two Sum II - Input Array Is Sorted | Medium |
 | 0874 | Backspace String Compare | Easy |
 
-### Sliding Window — 7 problems
+</details>
+
+<details>
+<summary><strong>Sliding Window</strong> — 7 problems</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0003 | Longest Substring Without Repeating Characters | Medium |
@@ -71,7 +87,11 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 1046 | Max Consecutive Ones III | Medium |
 | 1586 | Longest Subarray of 1's After Deleting One Element | Medium |
 
-### Stack — 5 problems
+</details>
+
+<details>
+<summary><strong>Stack</strong> — 5 problems</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0020 | Valid Parentheses | Easy |
@@ -80,7 +100,11 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 0496 | Next Greater Element I | Easy |
 | 0739 | Daily Temperatures | Medium |
 
-### Binary Search — 5 problems
+</details>
+
+<details>
+<summary><strong>Binary Search</strong> — 5 problems</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0034 | Find First and Last Position of Element in Sorted Array | Medium |
@@ -89,7 +113,11 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 0153 | Find Minimum in Rotated Sorted Array | Medium |
 | 0278 | First Bad Version | Easy |
 
-### Dynamic Programming — 8 problems
+</details>
+
+<details>
+<summary><strong>Dynamic Programming</strong> — 8 problems</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0005 | Longest Palindromic Substring | Medium |
@@ -97,11 +125,15 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 0198 | House Robber | Medium |
 | 0213 | House Robber II | Medium |
 | 0322 | Coin Change | Medium |
-| 509 | Fibonacci Number | Easy |
+| 0509 | Fibonacci Number | Easy |
 | 0747 | Min Cost Climbing Stairs | Easy |
 | 1236 | N-th Tribonacci Number | Easy |
 
-### Graphs (BFS / DFS) — 5 problems
+</details>
+
+<details>
+<summary><strong>Graphs (BFS / DFS)</strong> — 5 problems</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0200 | Number of Islands | Medium |
@@ -110,10 +142,28 @@ Each problem lives in its own folder using the original LeetSync naming conventi
 | 0733 | Flood Fill | Easy |
 | 1036 | Rotting Oranges | Medium |
 
-### Backtracking — 1 problem
+</details>
+
+<details>
+<summary><strong>Backtracking</strong> — 1 problem</summary>
+
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0079 | Word Search | Medium |
+
+</details>
+
+### Recently Added
+
+| # | Problem | Topic | Difficulty |
+|---|---------|-------|------------|
+| 940 | Fruit Into Baskets | Sliding Window | Medium |
+| 874 | Backspace String Compare | Two Pointers | Easy |
+| 84 | Largest Rectangle in Histogram | Stack | Hard |
+| 837 | Most Common Word | Arrays & Hashing | Easy |
+| 79 | Word Search | Backtracking | Medium |
+
+<!-- TRACKER_END -->
 
 ---
 

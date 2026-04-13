@@ -25,3 +25,7 @@ env/
 *.egg-info/
 dist/
 build/
+
+# Generated organized view — local only.
+# To commit organized/ to the repo, remove the line below.
+organized/
