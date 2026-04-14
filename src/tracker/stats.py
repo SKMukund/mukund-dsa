@@ -14,9 +14,15 @@ TOPIC_STUDY_ORDER = [
     "sliding_window",
     "stack",
     "binary_search",
-    "dynamic_programming",
+    "linked_list",
+    "trees",
+    "heap",
     "graphs",
     "backtracking",
+    "dynamic_programming",
+    "greedy",
+    "intervals",
+    "prefix_sum",
     "uncategorized",
 ]
 
