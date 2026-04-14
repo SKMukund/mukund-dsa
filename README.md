@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**47 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**48 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -46,22 +46,23 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**47 problems solved** (Python)  
+**48 problems solved** (Python)  
 **Difficulty:** 18 Easy · 26 Medium · 2 Hard  
 **Last updated:** 2026-04-14
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 18 | 26 | 2 | 47 |
+| 18 | 26 | 2 | 48 |
 
 ### Problems by Topic
 
 <details>
-<summary><strong>Arrays & Hashing</strong> — 9 problems</summary>
+<summary><strong>Arrays & Hashing</strong> — 10 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0001 | Two Sum | Easy |
+| 0013 | Roman to Integer |  |
 | 0049 | Group Anagrams | Medium |
 | 0121 | Best Time to Buy and Sell Stock | Medium |
 | 0164 | Maximum Gap | Hard |
@@ -179,11 +180,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
+| 13 | Roman to Integer | Arrays & Hashing |  |
+| 2 | Add Two Numbers | Linked List |  |
 | 874 | Backspace String Compare | Two Pointers | Easy |
 | 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
 | 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
-| 15 | 3Sum | Two Pointers | Medium |
-| 125 | Valid Palindrome | Two Pointers | Easy |
 
 <!-- TRACKER_END -->
 

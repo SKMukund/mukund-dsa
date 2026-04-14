@@ -30,7 +30,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from src.reorganizer.classify import TopicClassifier
-from src.reorganizer.move import find_root_problem_dirs, move_root_problem
+from src.reorganizer.move import find_unorganized_problem_dirs, move_problem
 from src.reorganizer.parse import parse_problem_dir
 from src.reorganizer.utils import build_problem_list
 from src.tracker.readme import update_readme
@@ -62,14 +62,15 @@ def main() -> None:
     config_path = REPO_ROOT / "config" / "topics.json"
     readme_path = REPO_ROOT / "README.md"
 
-    # ── Phase 1: Relocate root-level LeetSync folders ──────────────────────
-    root_dirs = find_root_problem_dirs(REPO_ROOT)
+    # ── Phase 1: Relocate unorganized LeetSync folders ────────────────────
+    # Scans both repo root and LeetCode/ subfolder.
+    unorganized = find_unorganized_problem_dirs(REPO_ROOT)
 
-    if root_dirs:
-        print(f"Phase 1 — Relocating {len(root_dirs)} root-level folder(s)...")
+    if unorganized:
+        print(f"Phase 1 — Relocating {len(unorganized)} unorganized folder(s)...")
         classifier = TopicClassifier(config_path)
 
-        for problem_dir in root_dirs:
+        for problem_dir in unorganized:
             try:
                 number, _, _ = parse_problem_dir(problem_dir)
             except ValueError as exc:
@@ -77,17 +78,18 @@ def main() -> None:
                 continue
 
             topic = classifier.classify(number, fallback_topic=_FALLBACK_TOPIC)
+            src_rel = problem_dir.relative_to(REPO_ROOT)
             dest = REPO_ROOT / "python" / topic / problem_dir.name
 
-            print(f"  [found] {problem_dir.name} → python/{topic}/ (#{number})")
+            print(f"  [found] {src_rel} → python/{topic}/ (#{number})")
 
             if args.dry_run:
                 print(f"  [dry]   would move to {dest.relative_to(REPO_ROOT)}")
                 continue
 
-            move_root_problem(REPO_ROOT, problem_dir, topic, verbose=args.verbose)
+            move_problem(REPO_ROOT, problem_dir, topic, verbose=args.verbose)
     else:
-        print("Phase 1 — No root-level problem folders detected.")
+        print("Phase 1 — No unorganized problem folders detected.")
 
     if args.dry_run:
         print("Dry run complete — no changes made.")
