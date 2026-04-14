@@ -180,11 +180,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 13 | Roman to Integer | Arrays & Hashing |  |
-| 2 | Add Two Numbers | Linked List |  |
 | 874 | Backspace String Compare | Two Pointers | Easy |
 | 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
 | 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
+| 15 | 3Sum | Two Pointers | Medium |
+| 125 | Valid Palindrome | Two Pointers | Easy |
 
 <!-- TRACKER_END -->
 
