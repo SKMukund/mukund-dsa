@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-"""Main entrypoint: reorganize + update README tracker.
+"""Main entrypoint: relocate new LeetSync folders + update README tracker.
 
 Usage:
-    python scripts/run.py                      # incremental update
-    python scripts/run.py --clean-organized    # wipe and regenerate organized/
-    python scripts/run.py --no-organized       # skip organized/, only update README
-    python scripts/run.py --verbose            # detailed per-problem logging
+    python scripts/run.py               # normal run
+    python scripts/run.py --verbose     # per-problem logging
+    python scripts/run.py --dry-run     # show what would move, make no changes
 
-This script:
-1. Scans raw LeetSync folders — both root-level ({N}-slug/) and organized
-   (python/{topic}/{N}-slug/) layouts are discovered automatically.
-2. Classifies each problem via config/topics.json (falls back to uncategorized).
-3. Copies files into organized/ (preserving LeetSync names).
-4. Rewrites the tracker section of README.md between <!-- TRACKER_START/END -->.
-5. Also updates the problem count in the introduction line.
+Flow
+----
+Phase 1 — Relocate
+    Detect any {N}-{slug}/ folders at the repo root (LeetSync's default drop location).
+    Classify each via config/topics.json and move it into python/{topic}/ using git mv.
+    This preserves git history and keeps python/ as the single source of truth.
 
-Raw LeetSync files are NEVER modified or moved.
+Phase 2 — Track
+    Scan python/{topic}/{N}-slug/ for all problems.
+    Recompute statistics and rewrite the README tracker between marker comments.
+
+Raw LeetSync file and folder names are never changed — only their location moves.
 """
 
 from __future__ import annotations
@@ -27,64 +29,75 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from src.reorganizer.generate import generate_organized
+from src.reorganizer.classify import TopicClassifier
+from src.reorganizer.move import find_root_problem_dirs, move_root_problem
+from src.reorganizer.parse import parse_problem_dir
 from src.reorganizer.utils import build_problem_list
 from src.tracker.readme import update_readme
+
+_FALLBACK_TOPIC = "uncategorized"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="LeetCode repo organizer and tracker.")
     parser.add_argument(
-        "--clean-organized",
-        action="store_true",
-        help="Wipe organized/ before regenerating (always used in CI).",
-    )
-    parser.add_argument(
-        "--no-organized",
-        action="store_true",
-        help="Skip generating organized/ output (README update only).",
-    )
-    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
-        help="Print per-problem scan, parse, classify, and output details.",
+        help="Print per-problem details for every phase.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be moved without making any changes.",
     )
     parser.add_argument(
         "--recent",
         type=int,
         default=5,
         metavar="N",
-        help="Number of recently added problems to show in the tracker (default: 5).",
+        help="Number of recently added problems in the README tracker (default: 5).",
     )
     args = parser.parse_args()
 
     config_path = REPO_ROOT / "config" / "topics.json"
     readme_path = REPO_ROOT / "README.md"
-    organized_root = REPO_ROOT / "organized"
 
-    # ── 1. Scan + parse + classify ─────────────────────────────────────────
-    print("Scanning for LeetSync problem folders...")
-    problems = build_problem_list(REPO_ROOT, config_path, verbose=args.verbose)
-    print(f"  Found {len(problems)} problem(s).")
+    # ── Phase 1: Relocate root-level LeetSync folders ──────────────────────
+    root_dirs = find_root_problem_dirs(REPO_ROOT)
 
-    if not problems:
-        print("  WARNING: no problems found. Check repo structure and config.")
+    if root_dirs:
+        print(f"Phase 1 — Relocating {len(root_dirs)} root-level folder(s)...")
+        classifier = TopicClassifier(config_path)
 
-    # ── 2. Generate organized/ ─────────────────────────────────────────────
-    if not args.no_organized:
-        print(f"Generating organized/ (clean={args.clean_organized})...")
-        written = generate_organized(
-            problems,
-            output_root=organized_root,
-            clean=args.clean_organized,
-            verbose=args.verbose,
-        )
-        print(f"  Wrote {len(written)} problem director(ies) into organized/.")
+        for problem_dir in root_dirs:
+            try:
+                number, _, _ = parse_problem_dir(problem_dir)
+            except ValueError as exc:
+                print(f"  [skip]  {problem_dir.name} — could not parse: {exc}")
+                continue
+
+            topic = classifier.classify(number, fallback_topic=_FALLBACK_TOPIC)
+            dest = REPO_ROOT / "python" / topic / problem_dir.name
+
+            print(f"  [found] {problem_dir.name} → python/{topic}/ (#{number})")
+
+            if args.dry_run:
+                print(f"  [dry]   would move to {dest.relative_to(REPO_ROOT)}")
+                continue
+
+            move_root_problem(REPO_ROOT, problem_dir, topic, verbose=args.verbose)
     else:
-        print("Skipping organized/ generation (--no-organized).")
+        print("Phase 1 — No root-level problem folders detected.")
 
-    # ── 3. Update README tracker ───────────────────────────────────────────
-    print("Updating README.md tracker...")
+    if args.dry_run:
+        print("Dry run complete — no changes made.")
+        return
+
+    # ── Phase 2: Scan python/ and update README ────────────────────────────
+    print("Phase 2 — Scanning python/ and updating tracker...")
+    problems = build_problem_list(REPO_ROOT, config_path, verbose=args.verbose)
+    print(f"  Found {len(problems)} problem(s) in python/.")
+
     changed = update_readme(readme_path, problems, recent_n=args.recent)
     if changed:
         print("  README.md updated.")

@@ -4,13 +4,12 @@ on:
   push:
     branches:
       - main
-    # No paths filter — LeetSync pushes to the repo root ({N}-{name}/),
-    # not under python/**. Filtering on python/** means the workflow never
-    # fires for new submissions. Any push to main triggers this workflow.
-  workflow_dispatch:  # Allow manual trigger from the Actions tab
+    # No path filter — LeetSync pushes to the repo root, not python/.
+    # Any push to main triggers this workflow.
+  workflow_dispatch:
 
 permissions:
-  contents: write  # needed to commit back README + organized/ changes
+  contents: write
 
 jobs:
   sync:
@@ -26,21 +25,20 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run organizer + tracker
-        run: |
-          python scripts/run.py --clean-organized --verbose
+      - name: Relocate new problems + update tracker
+        run: python scripts/run.py --verbose
 
       - name: Commit changes (if any)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stage README and organized/ — never stage raw solution folders
-          git add README.md organized/
+          # Stage moved folders (git mv already staged in index) + README
+          git add README.md python/
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: sync tracker and organized view — $(date -u +'%Y-%m-%d')"
+            git commit -m "chore: reorganize and sync tracker — $(date -u +'%Y-%m-%d')"
             git push origin HEAD
           fi

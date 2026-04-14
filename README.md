@@ -34,9 +34,12 @@ This approach emphasizes consistency, pattern recognition, and long-term retenti
 
 ## Tracker
 
-A GitHub Actions workflow triggers on every LeetSync commit and runs `scripts/run.py`, which scans raw solution files, extracts metadata, recomputes statistics, and rewrites the Progress section between the tracker markers — without modifying any solution code. Updates are idempotent: if no problems have changed, no commit is made.
+A GitHub Actions workflow triggers on every push to `main` and runs `scripts/run.py` in two phases:
 
-To register a new problem, add its number, topic, and title to `config/topics.json` and `config/titles.json`. Problems not in the config fall back to their folder's topic automatically.
+1. **Relocate** — any `{N}-{slug}/` folder LeetSync dropped at the repo root is classified via `config/topics.json` and moved into `python/{topic}/` using `git mv`, preserving history.
+2. **Track** — `python/` is scanned, statistics are recomputed, and this README is rewritten between the tracker markers.
+
+To register a new problem, add its number to `config/topics.json` and `config/titles.json`. Problems not in the config are placed in `uncategorized` automatically.
 
 ---
 
