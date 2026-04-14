@@ -45,7 +45,7 @@ To register a new problem, add its number, topic, and title to `config/topics.js
 <!-- TRACKER_START -->
 **46 problems solved** (Python)  
 **Difficulty:** 18 Easy · 26 Medium · 2 Hard  
-**Last updated:** 2026-04-13
+**Last updated:** 2026-04-14
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
@@ -167,11 +167,11 @@ To register a new problem, add its number, topic, and title to `config/topics.js
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 940 | Fruit Into Baskets | Sliding Window | Medium |
 | 874 | Backspace String Compare | Two Pointers | Easy |
-| 84 | Largest Rectangle in Histogram | Stack | Hard |
-| 837 | Most Common Word | Arrays & Hashing | Easy |
-| 79 | Word Search | Backtracking | Medium |
+| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
+| 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
+| 15 | 3Sum | Two Pointers | Medium |
+| 125 | Valid Palindrome | Two Pointers | Easy |
 
 <!-- TRACKER_END -->
 
