@@ -29,23 +29,19 @@ jobs:
 
       - name: Run organizer + tracker
         run: |
-          python scripts/run.py --no-organized
-          # Note: --no-organized skips copying files into organized/ in CI.
-          # The organized/ directory is .gitignored by default (it's a generated view).
-          # To commit organized/ as well, remove --no-organized and remove organized/
-          # from .gitignore.
+          python scripts/run.py --clean-organized
 
-      - name: Commit README changes (if any)
+      - name: Commit changes (if any)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stage only the README — never stage python/ or other raw files
-          git add README.md
+          # Stage README and organized/ — never stage python/ or other raw files
+          git add README.md organized/
 
           if git diff --cached --quiet; then
-            echo "No README changes to commit."
+            echo "No changes to commit."
           else
-            git commit -m "chore: update tracker — $(date -u +'%Y-%m-%d')"
+            git commit -m "chore: sync tracker and organized view — $(date -u +'%Y-%m-%d')"
             git push origin HEAD
           fi
