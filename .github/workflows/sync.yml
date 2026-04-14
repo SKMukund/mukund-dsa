@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - main
-    paths:
-      # Only run when actual solution files change (LeetSync commits)
-      - "python/**"
+    # No paths filter — LeetSync pushes to the repo root ({N}-{name}/),
+    # not under python/**. Filtering on python/** means the workflow never
+    # fires for new submissions. Any push to main triggers this workflow.
   workflow_dispatch:  # Allow manual trigger from the Actions tab
 
 permissions:
-  contents: write  # needed to commit back README changes
+  contents: write  # needed to commit back README + organized/ changes
 
 jobs:
   sync:
@@ -19,7 +19,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Fetch full history so git log --follow works for history preservation
           fetch-depth: 0
 
       - name: Set up Python
@@ -29,14 +28,14 @@ jobs:
 
       - name: Run organizer + tracker
         run: |
-          python scripts/run.py --clean-organized
+          python scripts/run.py --clean-organized --verbose
 
       - name: Commit changes (if any)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stage README and organized/ — never stage python/ or other raw files
+          # Stage README and organized/ — never stage raw solution folders
           git add README.md organized/
 
           if git diff --cached --quiet; then

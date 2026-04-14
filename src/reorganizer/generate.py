@@ -30,6 +30,7 @@ def generate_organized(
     problems: list[Problem],
     output_root: Path,
     clean: bool = False,
+    verbose: bool = False,
 ) -> list[Path]:
     """Copy all problem files into the organized output directory.
 
@@ -55,6 +56,9 @@ def generate_organized(
         for src_file in problem.files:
             dest_file = dest_dir / src_file.name  # preserve original filename
             shutil.copy2(src_file, dest_file)     # copy2 preserves metadata
+
+        if verbose:
+            print(f"  [generate] #{problem.number:>4} → {dest_dir.relative_to(output_root.parent)}")
 
         written.append(dest_dir)
 

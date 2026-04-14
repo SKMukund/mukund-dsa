@@ -2,15 +2,18 @@
 """Main entrypoint: reorganize + update README tracker.
 
 Usage:
-    python scripts/run.py                    # incremental update
-    python scripts/run.py --clean-organized  # wipe and regenerate organized/
-    python scripts/run.py --no-organized     # skip generating organized/, only update README
+    python scripts/run.py                      # incremental update
+    python scripts/run.py --clean-organized    # wipe and regenerate organized/
+    python scripts/run.py --no-organized       # skip organized/, only update README
+    python scripts/run.py --verbose            # detailed per-problem logging
 
 This script:
-1. Scans raw LeetSync folders (python/{topic}/{N}-{slug}/)
-2. Classifies each problem via config/topics.json
-3. Copies files into organized/ (preserving LeetSync names)
-4. Rewrites the tracker section of README.md between <!-- TRACKER_START/END -->
+1. Scans raw LeetSync folders — both root-level ({N}-slug/) and organized
+   (python/{topic}/{N}-slug/) layouts are discovered automatically.
+2. Classifies each problem via config/topics.json (falls back to uncategorized).
+3. Copies files into organized/ (preserving LeetSync names).
+4. Rewrites the tracker section of README.md between <!-- TRACKER_START/END -->.
+5. Also updates the problem count in the introduction line.
 
 Raw LeetSync files are NEVER modified or moved.
 """
@@ -21,7 +24,6 @@ import argparse
 import sys
 from pathlib import Path
 
-# Allow running as `python scripts/run.py` from repo root without installing the package.
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
@@ -35,12 +37,17 @@ def main() -> None:
     parser.add_argument(
         "--clean-organized",
         action="store_true",
-        help="Wipe the organized/ directory before regenerating.",
+        help="Wipe organized/ before regenerating (always used in CI).",
     )
     parser.add_argument(
         "--no-organized",
         action="store_true",
         help="Skip generating organized/ output (README update only).",
+    )
+    parser.add_argument(
+        "--verbose", "-v",
+        action="store_true",
+        help="Print per-problem scan, parse, classify, and output details.",
     )
     parser.add_argument(
         "--recent",
@@ -55,30 +62,34 @@ def main() -> None:
     readme_path = REPO_ROOT / "README.md"
     organized_root = REPO_ROOT / "organized"
 
-    # ── 1. Build problem list ──────────────────────────────────────────────
-    print("Scanning raw LeetSync directories...")
-    problems = build_problem_list(REPO_ROOT, config_path)
-    print(f"  Found {len(problems)} problems.")
+    # ── 1. Scan + parse + classify ─────────────────────────────────────────
+    print("Scanning for LeetSync problem folders...")
+    problems = build_problem_list(REPO_ROOT, config_path, verbose=args.verbose)
+    print(f"  Found {len(problems)} problem(s).")
 
-    # ── 2. Generate organized/ ────────────────────────────────────────────
+    if not problems:
+        print("  WARNING: no problems found. Check repo structure and config.")
+
+    # ── 2. Generate organized/ ─────────────────────────────────────────────
     if not args.no_organized:
-        print(f"Generating organized/ output (clean={args.clean_organized})...")
+        print(f"Generating organized/ (clean={args.clean_organized})...")
         written = generate_organized(
             problems,
             output_root=organized_root,
             clean=args.clean_organized,
+            verbose=args.verbose,
         )
-        print(f"  Wrote {len(written)} problem directories into organized/.")
+        print(f"  Wrote {len(written)} problem director(ies) into organized/.")
     else:
         print("Skipping organized/ generation (--no-organized).")
 
-    # ── 3. Update README tracker ──────────────────────────────────────────
+    # ── 3. Update README tracker ───────────────────────────────────────────
     print("Updating README.md tracker...")
     changed = update_readme(readme_path, problems, recent_n=args.recent)
     if changed:
         print("  README.md updated.")
     else:
-        print("  README.md already up-to-date (no changes).")
+        print("  README.md already up-to-date.")
 
     print("Done.")
 

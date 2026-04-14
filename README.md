@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**46 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**47 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -43,13 +43,13 @@ To register a new problem, add its number, topic, and title to `config/topics.js
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**46 problems solved** (Python)  
+**47 problems solved** (Python)  
 **Difficulty:** 18 Easy · 26 Medium · 2 Hard  
 **Last updated:** 2026-04-14
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 18 | 26 | 2 | 46 |
+| 18 | 26 | 2 | 47 |
 
 ### Problems by Topic
 
@@ -126,6 +126,15 @@ To register a new problem, add its number, topic, and title to `config/topics.js
 </details>
 
 <details>
+<summary><strong>Linked List</strong> — 1 problem</summary>
+
+| # | Problem | Difficulty |
+|---|---------|------------|
+| 0002 | Add Two Numbers |  |
+
+</details>
+
+<details>
 <summary><strong>Graphs (BFS / DFS)</strong> — 5 problems</summary>
 
 | # | Problem | Difficulty |
@@ -167,11 +176,11 @@ To register a new problem, add its number, topic, and title to `config/topics.js
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
+| 2 | Add Two Numbers | Linked List |  |
 | 874 | Backspace String Compare | Two Pointers | Easy |
 | 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
 | 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
 | 15 | 3Sum | Two Pointers | Medium |
-| 125 | Valid Palindrome | Two Pointers | Easy |
 
 <!-- TRACKER_END -->
 
