@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**48 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**49 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -46,13 +46,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**48 problems solved** (Python)  
+**49 problems solved** (Python)  
 **Difficulty:** 18 Easy · 26 Medium · 2 Hard  
-**Last updated:** 2026-04-14
+**Last updated:** 2026-04-15
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 18 | 26 | 2 | 48 |
+| 18 | 26 | 2 | 49 |
 
 ### Problems by Topic
 
@@ -173,6 +173,15 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | 0509 | Fibonacci Number | Easy |
 | 0747 | Min Cost Climbing Stairs | Easy |
 | 1236 | N-th Tribonacci Number | Easy |
+
+</details>
+
+<details>
+<summary><strong>Uncategorized</strong> — 1 problem</summary>
+
+| # | Problem | Difficulty |
+|---|---------|------------|
+| 0055 | Jump Game |  |
 
 </details>
 
