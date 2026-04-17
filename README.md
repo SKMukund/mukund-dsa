@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**50 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**51 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -46,13 +46,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**50 problems solved** (Python)  
+**51 problems solved** (Python)  
 **Difficulty:** 18 Easy · 26 Medium · 2 Hard  
 **Last updated:** 2026-04-17
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 18 | 26 | 2 | 50 |
+| 18 | 26 | 2 | 51 |
 
 ### Problems by Topic
 
@@ -177,12 +177,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Uncategorized</strong> — 2 problems</summary>
+<summary><strong>Uncategorized</strong> — 3 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0055 | Jump Game |  |
 | 0134 | Gas Station |  |
+| 0283 | Move Zeroes |  |
 
 </details>
 
@@ -191,10 +192,10 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
 | 55 | Jump Game | Uncategorized |  |
+| 134 | Gas Station | Uncategorized |  |
 | 874 | Backspace String Compare | Two Pointers | Easy |
 | 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
 | 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
-| 15 | 3Sum | Two Pointers | Medium |
 
 <!-- TRACKER_END -->
 
