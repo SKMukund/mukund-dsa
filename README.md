@@ -199,11 +199,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
+| 5 | Longest Palindromic Substring | Two Pointers | Medium |
 | 283 | Move Zeroes | Two Pointers | Easy |
-| 55 | Jump Game | Greedy | Medium |
-| 134 | Gas Station | Greedy | Medium |
-| 13 | Roman to Integer | Arrays & Hashing | Easy |
-| 2 | Add Two Numbers | Linked List | Medium |
+| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
+| 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
+| 15 | 3Sum | Two Pointers | Medium |
 
 <!-- TRACKER_END -->
 
