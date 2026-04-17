@@ -16,6 +16,9 @@ from __future__ import annotations
 
 import datetime
 import re
+from zoneinfo import ZoneInfo
+
+_PST = ZoneInfo("America/Los_Angeles")
 from pathlib import Path
 
 from src.reorganizer.models import Problem
@@ -127,7 +130,7 @@ def _render_tracker(
     """Build the full tracker markdown block (content between the markers)."""
     stats = compute_stats(problems, difficulty_map)
     recent = get_recent(problems, n=recent_n)
-    now = datetime.datetime.now().strftime("%Y-%m-%d")
+    now = datetime.datetime.now(_PST).strftime("%Y-%m-%d")
 
     lines: list[str] = []
 
