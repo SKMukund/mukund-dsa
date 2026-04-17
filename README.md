@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**50 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**51 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -46,13 +46,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**50 problems solved** (Python)  
-**Difficulty:** 20 Easy · 29 Medium · 1 Hard  
+**51 problems solved** (Python)  
+**Difficulty:** 21 Easy · 29 Medium · 1 Hard  
 **Last updated:** 2026-04-17
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 20 | 29 | 1 | 50 |
+| 21 | 29 | 1 | 51 |
 
 ### Problems by Topic
 
@@ -75,7 +75,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Two Pointers</strong> — 6 problems</summary>
+<summary><strong>Two Pointers</strong> — 7 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
@@ -84,6 +84,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | 0026 | Remove Duplicates from Sorted Array | Easy |
 | 0125 | Valid Palindrome | Easy |
 | 0167 | Two Sum II - Input Array Is Sorted | Medium |
+| 0283 | Move Zeroes | Easy |
 | 0874 | Backspace String Compare | Easy |
 
 </details>
