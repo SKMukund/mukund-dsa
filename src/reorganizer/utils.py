@@ -42,7 +42,14 @@ def build_problem_list(
             print(f"  [skip]  {problem_dir} — {exc}")
             continue
 
-        topic = classifier.classify(number, fallback_topic=raw_topic)
+        # Pass problem_dir so that problems already sitting in "uncategorized/"
+        # are re-evaluated by the code classifier instead of staying there.
+        topic = classifier.classify(
+            number,
+            fallback_topic=raw_topic,
+            problem_dir=problem_dir,
+            verbose=verbose,
+        )
 
         if verbose:
             print(f"  [parse] #{number:>4} {title} (python/{raw_topic}) → topic={topic}")

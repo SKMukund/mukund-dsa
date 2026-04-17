@@ -75,7 +75,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Two Pointers</strong> — 6 problems</summary>
+<summary><strong>Two Pointers</strong> — 7 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
@@ -84,6 +84,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | 0026 | Remove Duplicates from Sorted Array | Easy |
 | 0125 | Valid Palindrome | Easy |
 | 0167 | Two Sum II - Input Array Is Sorted | Medium |
+| 0283 | Move Zeroes |  |
 | 0874 | Backspace String Compare | Easy |
 
 </details>
@@ -177,13 +178,12 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Uncategorized</strong> — 3 problems</summary>
+<summary><strong>Greedy</strong> — 2 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0055 | Jump Game |  |
 | 0134 | Gas Station |  |
-| 0283 | Move Zeroes |  |
 
 </details>
 
@@ -191,11 +191,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 55 | Jump Game | Uncategorized |  |
-| 134 | Gas Station | Uncategorized |  |
-| 874 | Backspace String Compare | Two Pointers | Easy |
-| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
-| 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
+| 283 | Move Zeroes | Two Pointers |  |
+| 55 | Jump Game | Greedy |  |
+| 134 | Gas Station | Greedy |  |
+| 13 | Roman to Integer | Arrays & Hashing |  |
+| 2 | Add Two Numbers | Linked List |  |
 
 <!-- TRACKER_END -->
 

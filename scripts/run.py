@@ -10,8 +10,12 @@ Flow
 ----
 Phase 1 — Relocate
     Detect any {N}-{slug}/ folders at the repo root (LeetSync's default drop location).
-    Classify each via config/topics.json and move it into python/{topic}/ using git mv.
-    This preserves git history and keeps python/ as the single source of truth.
+    Classify each via config/topics.json (then code analysis as fallback) and move it
+    into python/{topic}/ using git mv.  This preserves git history.
+
+Phase 1.5 — Drain uncategorized/
+    Scan python/uncategorized/ for problems that the code classifier can now resolve.
+    Move each one to its inferred topic folder using git mv.
 
 Phase 2 — Track
     Scan python/{topic}/{N}-slug/ for all problems.
@@ -23,6 +27,7 @@ Raw LeetSync file and folder names are never changed — only their location mov
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -36,6 +41,64 @@ from src.reorganizer.utils import build_problem_list
 from src.tracker.readme import update_readme
 
 _FALLBACK_TOPIC = "uncategorized"
+_PROBLEM_RE = re.compile(r"^\d+-")
+
+
+def _drain_uncategorized(
+    repo_root: Path,
+    classifier: TopicClassifier,
+    *,
+    dry_run: bool,
+    verbose: bool,
+) -> None:
+    """Move problems out of python/uncategorized/ when code analysis classifies them.
+
+    This is idempotent: problems that cannot be classified stay in uncategorized/.
+    """
+    uncategorized_dir = repo_root / "python" / "uncategorized"
+    if not uncategorized_dir.is_dir():
+        return
+
+    candidates = sorted(
+        d for d in uncategorized_dir.iterdir()
+        if d.is_dir() and _PROBLEM_RE.match(d.name)
+    )
+    if not candidates:
+        return
+
+    print(
+        f"Phase 1.5 — Checking {len(candidates)} problem(s) in uncategorized/ "
+        "for code-based reclassification..."
+    )
+
+    for problem_dir in candidates:
+        try:
+            number, _, _ = parse_problem_dir(problem_dir)
+        except ValueError as exc:
+            print(f"  [skip]  {problem_dir.name} — could not parse: {exc}")
+            continue
+
+        # Only reclassify if not pinned in topics.json (that mapping is authoritative).
+        topic = classifier.classify(
+            number,
+            fallback_topic=_FALLBACK_TOPIC,
+            problem_dir=problem_dir,
+            verbose=verbose,
+        )
+
+        if topic == _FALLBACK_TOPIC:
+            if verbose:
+                print(f"  [keep]  {problem_dir.name} — stays in uncategorized/")
+            continue
+
+        dest = repo_root / "python" / topic / problem_dir.name
+        print(f"  [found] uncategorized/{problem_dir.name} → python/{topic}/")
+
+        if dry_run:
+            print(f"  [dry]   would move to {dest.relative_to(repo_root)}")
+            continue
+
+        move_problem(repo_root, problem_dir, topic, verbose=verbose)
 
 
 def main() -> None:
@@ -62,13 +125,14 @@ def main() -> None:
     config_path = REPO_ROOT / "config" / "topics.json"
     readme_path = REPO_ROOT / "README.md"
 
+    classifier = TopicClassifier(config_path)
+
     # ── Phase 1: Relocate unorganized LeetSync folders ────────────────────
     # Scans both repo root and LeetCode/ subfolder.
     unorganized = find_unorganized_problem_dirs(REPO_ROOT)
 
     if unorganized:
         print(f"Phase 1 — Relocating {len(unorganized)} unorganized folder(s)...")
-        classifier = TopicClassifier(config_path)
 
         for problem_dir in unorganized:
             try:
@@ -77,7 +141,12 @@ def main() -> None:
                 print(f"  [skip]  {problem_dir.name} — could not parse: {exc}")
                 continue
 
-            topic = classifier.classify(number, fallback_topic=_FALLBACK_TOPIC)
+            topic = classifier.classify(
+                number,
+                fallback_topic=_FALLBACK_TOPIC,
+                problem_dir=problem_dir,
+                verbose=args.verbose,
+            )
             src_rel = problem_dir.relative_to(REPO_ROOT)
             dest = REPO_ROOT / "python" / topic / problem_dir.name
 
@@ -90,6 +159,14 @@ def main() -> None:
             move_problem(REPO_ROOT, problem_dir, topic, verbose=args.verbose)
     else:
         print("Phase 1 — No unorganized problem folders detected.")
+
+    # ── Phase 1.5: Drain uncategorized/ ───────────────────────────────────
+    _drain_uncategorized(
+        REPO_ROOT,
+        classifier,
+        dry_run=args.dry_run,
+        verbose=args.verbose,
+    )
 
     if args.dry_run:
         print("Dry run complete — no changes made.")
