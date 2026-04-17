@@ -127,7 +127,7 @@ def _render_tracker(
     """Build the full tracker markdown block (content between the markers)."""
     stats = compute_stats(problems, difficulty_map)
     recent = get_recent(problems, n=recent_n)
-    now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+    now = datetime.datetime.now().strftime("%Y-%m-%d")
 
     lines: list[str] = []
 

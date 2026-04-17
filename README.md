@@ -48,7 +48,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 <!-- TRACKER_START -->
 **51 problems solved** (Python)  
 **Difficulty:** 21 Easy · 29 Medium · 1 Hard  
-**Last updated:** 2026-04-17
+**Last updated:** 2026-04-16
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
@@ -191,11 +191,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 874 | Backspace String Compare | Two Pointers | Easy |
-| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
-| 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
-| 15 | 3Sum | Two Pointers | Medium |
-| 125 | Valid Palindrome | Two Pointers | Easy |
+| 283 | Move Zeroes | Two Pointers | Easy |
+| 55 | Jump Game | Greedy | Medium |
+| 134 | Gas Station | Greedy | Medium |
+| 13 | Roman to Integer | Arrays & Hashing | Easy |
+| 2 | Add Two Numbers | Linked List | Medium |
 
 <!-- TRACKER_END -->
 
