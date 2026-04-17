@@ -21,7 +21,7 @@ from pathlib import Path
 from src.reorganizer.models import Problem
 from src.tracker.recent import get_recent
 from src.tracker.stats import compute_stats
-from src.tracker.utils import get_difficulty, language_display_name, topic_display_name
+from src.tracker.utils import DifficultyMap, language_display_name, topic_display_name
 
 MARKER_START = "<!-- TRACKER_START -->"
 MARKER_END = "<!-- TRACKER_END -->"
@@ -29,16 +29,22 @@ MARKER_END = "<!-- TRACKER_END -->"
 _DIFFICULTY_ORDER = ["Easy", "Medium", "Hard"]
 
 
-def update_readme(readme_path: Path, problems: list[Problem], recent_n: int = 5) -> bool:
+def update_readme(
+    readme_path: Path,
+    problems: list[Problem],
+    difficulty_map: DifficultyMap,
+    recent_n: int = 5,
+) -> bool:
     """Rewrite the tracker section of README.md.
 
     Also updates the problem count in the introduction line if present,
     keeping it consistent with the tracker total without requiring manual edits.
 
     Args:
-        readme_path: Path to the README.md file.
-        problems:    Full list of Problem objects.
-        recent_n:    Number of recent problems to list.
+        readme_path:    Path to the README.md file.
+        problems:       Full list of Problem objects.
+        difficulty_map: Loaded DifficultyMap for resolving per-problem difficulty.
+        recent_n:       Number of recent problems to list.
 
     Returns:
         True if the file was changed, False if it was already up-to-date.
@@ -47,7 +53,7 @@ def update_readme(readme_path: Path, problems: list[Problem], recent_n: int = 5)
     total = len(problems)
 
     text = _ensure_markers(original)
-    tracker_block = _render_tracker(problems, recent_n)
+    tracker_block = _render_tracker(problems, difficulty_map, recent_n)
     text = _inject(text, tracker_block)
     text = _update_intro_count(text, total)
 
@@ -113,9 +119,13 @@ def _ensure_markers(readme: str) -> str:
 # Rendering
 # ---------------------------------------------------------------------------
 
-def _render_tracker(problems: list[Problem], recent_n: int) -> str:
+def _render_tracker(
+    problems: list[Problem],
+    difficulty_map: DifficultyMap,
+    recent_n: int,
+) -> str:
     """Build the full tracker markdown block (content between the markers)."""
-    stats = compute_stats(problems)
+    stats = compute_stats(problems, difficulty_map)
     recent = get_recent(problems, n=recent_n)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
 
@@ -159,7 +169,7 @@ def _render_tracker(problems: list[Problem], recent_n: int) -> str:
         lines.append("|---|---------|------------|")
         for p in topic_problems:
             num_str = str(p.number).zfill(4)
-            diff_label = get_difficulty(p.number)
+            diff_label = difficulty_map.get(p.folder_name)
             lines.append(f"| {num_str} | {p.title} | {diff_label} |")
         lines.append("")
         lines.append("</details>")
@@ -171,7 +181,7 @@ def _render_tracker(problems: list[Problem], recent_n: int) -> str:
     lines.append("| # | Problem | Topic | Difficulty |")
     lines.append("|---|---------|-------|------------|")
     for p in recent:
-        diff_label = get_difficulty(p.number)
+        diff_label = difficulty_map.get(p.folder_name)
         lines.append(
             f"| {p.number} | {p.title} | {topic_display_name(p.topic)} | {diff_label} |"
         )

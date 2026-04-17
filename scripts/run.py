@@ -19,7 +19,8 @@ Phase 1.5 — Drain uncategorized/
 
 Phase 2 — Track
     Scan python/{topic}/{N}-slug/ for all problems.
-    Recompute statistics and rewrite the README tracker between marker comments.
+    Refresh config/difficulty_map.json — parse each problem's README.md badge and add
+    any missing entries.  Recompute statistics and rewrite the README tracker.
 
 Raw LeetSync file and folder names are never changed — only their location moves.
 """
@@ -39,6 +40,7 @@ from src.reorganizer.move import find_unorganized_problem_dirs, move_problem
 from src.reorganizer.parse import parse_problem_dir
 from src.reorganizer.utils import build_problem_list
 from src.tracker.readme import update_readme
+from src.tracker.utils import DifficultyMap
 
 _FALLBACK_TOPIC = "uncategorized"
 _PROBLEM_RE = re.compile(r"^\d+-")
@@ -101,6 +103,37 @@ def _drain_uncategorized(
         move_problem(repo_root, problem_dir, topic, verbose=verbose)
 
 
+def _refresh_difficulty_map(
+    diff_map: DifficultyMap,
+    problems: list,
+    verbose: bool = False,
+) -> None:
+    """Parse README.md badges and update difficulty_map.json with new entries.
+
+    Existing entries are never overwritten — manual edits to the JSON are safe.
+    Only newly encountered problems (missing from the map) are added.
+
+    Args:
+        diff_map:  Loaded DifficultyMap (modified in place if new entries found).
+        problems:  Full problem list from build_problem_list().
+        verbose:   Print per-problem lines for newly added entries.
+    """
+    n_new = 0
+    for p in problems:
+        added = diff_map.ingest(p.folder_name, p.source_dir)
+        if added:
+            n_new += 1
+            if verbose:
+                level = diff_map.get(p.folder_name)
+                print(f"  [difficulty] {p.folder_name} → {level}")
+
+    if n_new:
+        diff_map.save()
+        print(f"  difficulty_map.json updated — {n_new} new entr{'y' if n_new == 1 else 'ies'} added.")
+    elif verbose:
+        print(f"  difficulty_map.json already up-to-date ({len(diff_map)} entries).")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="LeetCode repo organizer and tracker.")
     parser.add_argument(
@@ -123,6 +156,7 @@ def main() -> None:
     args = parser.parse_args()
 
     config_path = REPO_ROOT / "config" / "topics.json"
+    diff_path = REPO_ROOT / "config" / "difficulty_map.json"
     readme_path = REPO_ROOT / "README.md"
 
     classifier = TopicClassifier(config_path)
@@ -177,7 +211,11 @@ def main() -> None:
     problems = build_problem_list(REPO_ROOT, config_path, verbose=args.verbose)
     print(f"  Found {len(problems)} problem(s) in python/.")
 
-    changed = update_readme(readme_path, problems, recent_n=args.recent)
+    # Refresh difficulty_map.json before rendering the README.
+    diff_map = DifficultyMap(diff_path)
+    _refresh_difficulty_map(diff_map, problems, verbose=args.verbose)
+
+    changed = update_readme(readme_path, problems, diff_map, recent_n=args.recent)
     if changed:
         print("  README.md updated.")
     else:

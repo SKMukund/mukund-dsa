@@ -1,30 +1,133 @@
-"""Shared formatting helpers for the tracker package."""
+"""Shared formatting helpers and difficulty management for the tracker package."""
 
 from __future__ import annotations
 
-_DIFFICULTY_MAP: dict[int, str] = {
-    # Easy
-    1: "Easy", 20: "Easy", 26: "Easy", 35: "Easy", 69: "Easy", 70: "Easy",
-    125: "Easy", 217: "Easy", 242: "Easy", 278: "Easy", 496: "Easy",
-    509: "Easy", 643: "Easy", 733: "Easy", 747: "Easy", 837: "Easy",
-    874: "Easy", 1236: "Easy",
-    # Medium (add 34)
-    34: "Medium",
-    # Medium
-    3: "Medium", 5: "Medium", 11: "Medium", 15: "Medium", 49: "Medium",
-    121: "Medium", 150: "Medium", 153: "Medium", 167: "Medium", 198: "Medium",
-    200: "Medium", 209: "Medium", 213: "Medium", 238: "Medium", 322: "Medium",
-    451: "Medium", 542: "Medium", 567: "Medium", 695: "Medium", 739: "Medium",
-    79: "Medium", 940: "Medium", 1036: "Medium", 1046: "Medium", 1586: "Medium",
-    # Hard
-    84: "Hard", 164: "Hard",
-}
+import json
+import re
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# Difficulty map
+# ---------------------------------------------------------------------------
+
+# Matches the difficulty badge that LeetSync embeds in each problem's README.md:
+#   <img src='...badge/Difficulty-Easy-brightgreen' alt='Difficulty: Easy' />
+_DIFFICULTY_BADGE_RE = re.compile(
+    r"""alt=['"]Difficulty:\s*(Easy|Medium|Hard)['"]""",
+    re.IGNORECASE,
+)
 
 
-def get_difficulty(number: int) -> str:
-    """Return the difficulty label for a problem number, or empty string if unknown."""
-    return _DIFFICULTY_MAP.get(number, "")
+class DifficultyMap:
+    """File-backed mapping from problem folder names to difficulty labels.
 
+    The backing file is ``config/difficulty_map.json``.  It maps
+    ``"{number}-{slug}"`` keys (the LeetSync folder name) to
+    ``"Easy"`` / ``"Medium"`` / ``"Hard"`` values.
+
+    The file is auto-updated whenever the pipeline encounters a problem whose
+    difficulty has not yet been recorded — no manual edits needed.
+
+    Example entry::
+
+        "1-two-sum": "Easy"
+    """
+
+    def __init__(self, config_path: Path) -> None:
+        """Load the map from *config_path*, or start empty if absent.
+
+        Args:
+            config_path: Path to ``config/difficulty_map.json``.
+        """
+        self._path = config_path
+        self._map: dict[str, str] = {}
+        if config_path.exists():
+            raw = config_path.read_text()
+            self._map = json.loads(raw) if raw.strip() else {}
+        self._dirty = False
+
+    # ------------------------------------------------------------------
+    # Querying
+    # ------------------------------------------------------------------
+
+    def get(self, folder_name: str) -> str:
+        """Return the difficulty for *folder_name*, or ``""`` if unknown.
+
+        Args:
+            folder_name: LeetSync folder name, e.g. ``"1-two-sum"``.
+        """
+        return self._map.get(folder_name, "")
+
+    def __len__(self) -> int:
+        return len(self._map)
+
+    # ------------------------------------------------------------------
+    # Updating
+    # ------------------------------------------------------------------
+
+    def ingest(self, folder_name: str, problem_dir: Path) -> bool:
+        """Parse difficulty from *problem_dir*/README.md and store it.
+
+        Does nothing if *folder_name* is already in the map (existing entries
+        are never overwritten, keeping manual edits safe).
+
+        Args:
+            folder_name:  LeetSync folder name, e.g. ``"1-two-sum"``.
+            problem_dir:  Absolute path to the problem folder.
+
+        Returns:
+            True if the map was modified (a new entry was added).
+        """
+        if folder_name in self._map:
+            return False
+        diff = _parse_difficulty(problem_dir)
+        if diff:
+            self._map[folder_name] = diff
+            self._dirty = True
+            return True
+        return False
+
+    def is_dirty(self) -> bool:
+        """Return True if the map has unsaved changes."""
+        return self._dirty
+
+    def save(self) -> None:
+        """Write the map to disk, sorted by key for stable diffs."""
+        self._path.write_text(
+            json.dumps(self._map, indent=2, sort_keys=True) + "\n"
+        )
+        self._dirty = False
+
+
+# ---------------------------------------------------------------------------
+# README badge parser
+# ---------------------------------------------------------------------------
+
+def _parse_difficulty(problem_dir: Path) -> str | None:
+    """Extract the difficulty label from the LeetSync README.md badge.
+
+    LeetSync generates a badge line like::
+
+        <img src='https://img.shields.io/badge/Difficulty-Easy-brightgreen'
+             alt='Difficulty: Easy' />
+
+    Args:
+        problem_dir: Path to the problem folder.
+
+    Returns:
+        ``"Easy"``, ``"Medium"``, ``"Hard"``, or ``None`` if no badge found.
+    """
+    readme = problem_dir / "README.md"
+    if not readme.is_file():
+        return None
+    content = readme.read_text(errors="replace")
+    m = _DIFFICULTY_BADGE_RE.search(content)
+    return m.group(1).capitalize() if m else None
+
+
+# ---------------------------------------------------------------------------
+# Display name helpers (unchanged)
+# ---------------------------------------------------------------------------
 
 def topic_display_name(topic_slug: str) -> str:
     """Convert a topic slug to a display-friendly heading.

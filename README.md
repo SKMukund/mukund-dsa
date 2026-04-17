@@ -47,12 +47,12 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 <!-- TRACKER_START -->
 **51 problems solved** (Python)  
-**Difficulty:** 18 Easy · 26 Medium · 2 Hard  
+**Difficulty:** 21 Easy · 29 Medium · 1 Hard  
 **Last updated:** 2026-04-17
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 18 | 26 | 2 | 51 |
+| 21 | 29 | 1 | 51 |
 
 ### Problems by Topic
 
@@ -62,10 +62,10 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0001 | Two Sum | Easy |
-| 0013 | Roman to Integer |  |
+| 0013 | Roman to Integer | Easy |
 | 0049 | Group Anagrams | Medium |
-| 0121 | Best Time to Buy and Sell Stock | Medium |
-| 0164 | Maximum Gap | Hard |
+| 0121 | Best Time to Buy and Sell Stock | Easy |
+| 0164 | Maximum Gap | Medium |
 | 0217 | Contains Duplicate | Easy |
 | 0238 | Product of Array Except Self | Medium |
 | 0242 | Valid Anagram | Easy |
@@ -84,7 +84,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | 0026 | Remove Duplicates from Sorted Array | Easy |
 | 0125 | Valid Palindrome | Easy |
 | 0167 | Two Sum II - Input Array Is Sorted | Medium |
-| 0283 | Move Zeroes |  |
+| 0283 | Move Zeroes | Easy |
 | 0874 | Backspace String Compare | Easy |
 
 </details>
@@ -135,7 +135,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Difficulty |
 |---|---------|------------|
-| 0002 | Add Two Numbers |  |
+| 0002 | Add Two Numbers | Medium |
 
 </details>
 
@@ -182,8 +182,8 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Difficulty |
 |---|---------|------------|
-| 0055 | Jump Game |  |
-| 0134 | Gas Station |  |
+| 0055 | Jump Game | Medium |
+| 0134 | Gas Station | Medium |
 
 </details>
 
@@ -191,11 +191,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 874 | Backspace String Compare | Two Pointers | Easy |
-| 283 | Move Zeroes | Two Pointers |  |
-| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
-| 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
-| 15 | 3Sum | Two Pointers | Medium |
+| 283 | Move Zeroes | Two Pointers | Easy |
+| 55 | Jump Game | Greedy | Medium |
+| 134 | Gas Station | Greedy | Medium |
+| 13 | Roman to Integer | Arrays & Hashing | Easy |
+| 2 | Add Two Numbers | Linked List | Medium |
 
 <!-- TRACKER_END -->
 

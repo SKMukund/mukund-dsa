@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections import defaultdict
 
 from src.reorganizer.models import Problem
-from src.tracker.utils import get_difficulty
+from src.tracker.utils import DifficultyMap
 
 # Topics in the order they are typically studied (used for display ordering).
 TOPIC_STUDY_ORDER = [
@@ -27,8 +27,12 @@ TOPIC_STUDY_ORDER = [
 ]
 
 
-def compute_stats(problems: list[Problem]) -> dict:
+def compute_stats(problems: list[Problem], difficulty_map: DifficultyMap) -> dict:
     """Return a stats dict suitable for rendering into the README tracker.
+
+    Args:
+        problems:       Full list of Problem objects.
+        difficulty_map: Loaded DifficultyMap used to resolve per-problem difficulty.
 
     Returns:
         {
@@ -45,7 +49,7 @@ def compute_stats(problems: list[Problem]) -> dict:
 
     for p in problems:
         by_language[p.language] += 1
-        diff = get_difficulty(p.number)
+        diff = difficulty_map.get(p.folder_name)
         by_difficulty[diff] += 1
         by_topic[p.topic].append(p)
 
