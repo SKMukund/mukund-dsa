@@ -3,8 +3,10 @@
 LeetSync names folders as:  {number}-{kebab-case-slug}/
 e.g.  1-two-sum/   49-group-anagrams/   200-number-of-islands/
 
-This module extracts the problem number and slug from the folder name,
-and derives a human-readable title from the slug.
+This module extracts the problem number and slug from the folder name, and
+derives a human-readable title by reading the ``<h2>`` tag in the LeetSync
+README.md (which always contains the exact LeetCode title).  The slug-based
+fallback is retained for the rare case where no README is present.
 """
 
 from __future__ import annotations
@@ -14,29 +16,34 @@ from pathlib import Path
 
 _FOLDER_RE = re.compile(r"^(\d+)-(.+)$")
 
-# Loaded once on first call; maps str(number) → canonical title.
-_title_overrides: dict[str, str] | None = None
+# Extracts the problem title from the LeetSync README <h2> anchor:
+#   <h2><a href="...">Two Sum</a></h2>
+_TITLE_RE = re.compile(r"<h2[^>]*>\s*<a[^>]*>([^<]+)</a>", re.IGNORECASE)
 
 
-def _load_title_overrides(repo_root: Path | None = None) -> dict[str, str]:
-    """Load config/titles.json if it exists, else return empty dict."""
-    global _title_overrides
-    if _title_overrides is not None:
-        return _title_overrides
-    if repo_root is None:
-        # Infer repo root as three levels up from this file (src/reorganizer/parse.py)
-        repo_root = Path(__file__).resolve().parent.parent.parent
-    titles_path = repo_root / "config" / "titles.json"
-    if titles_path.exists():
-        import json
-        _title_overrides = json.loads(titles_path.read_text())
-    else:
-        _title_overrides = {}
-    return _title_overrides
+def _parse_title_from_readme(problem_dir: Path) -> str | None:
+    """Read the LeetSync README.md and return the exact problem title.
+
+    LeetSync always writes the title inside the first ``<h2>`` anchor::
+
+        <h2><a href="https://leetcode.com/problems/two-sum">Two Sum</a></h2>
+
+    Returns the title string (e.g. ``"Two Sum"``) or ``None`` if the README
+    is absent or does not contain the expected markup.
+    """
+    readme = problem_dir / "README.md"
+    if not readme.is_file():
+        return None
+    m = _TITLE_RE.search(readme.read_text(errors="replace"))
+    return m.group(1).strip() if m else None
 
 
 def parse_problem_dir(problem_dir: Path) -> tuple[int, str, str]:
     """Extract (number, slug, title) from a LeetSync problem folder name.
+
+    Title resolution order:
+    1. ``<h2>`` anchor text in the LeetSync ``README.md`` (exact LeetCode title).
+    2. ``slug_to_title(slug)`` as a fallback when no README is present.
 
     Args:
         problem_dir: Path to a folder like ``1-two-sum/``.
@@ -59,17 +66,16 @@ def parse_problem_dir(problem_dir: Path) -> tuple[int, str, str]:
         )
     number = int(m.group(1))
     slug = m.group(2)
-    overrides = _load_title_overrides()
-    title = overrides.get(str(number)) or slug_to_title(slug)
+    title = _parse_title_from_readme(problem_dir) or slug_to_title(slug)
     return number, slug, title
 
 
 def slug_to_title(slug: str) -> str:
-    """Convert a kebab-case slug to a title-cased string.
+    """Convert a kebab-case slug to a title-cased string (fallback only).
 
     Examples:
         "two-sum"             → "Two Sum"
-        "n-th-tribonacci-number" → "N Th Tribonacci Number"  (no special-casing needed)
+        "n-th-tribonacci-number" → "N Th Tribonacci Number"
         "01-matrix"           → "01 Matrix"
     """
     return " ".join(word.capitalize() for word in slug.split("-"))
@@ -78,7 +84,7 @@ def slug_to_title(slug: str) -> str:
 def list_problem_files(problem_dir: Path) -> list[Path]:
     """Return all files inside a problem folder (solution + README + any extras).
 
-    Only returns direct children — does not recurse deeper (LeetSync never nests further).
+    Only returns direct children — does not recurse deeper.
     """
     return [f for f in problem_dir.iterdir() if f.is_file()]
 

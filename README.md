@@ -57,19 +57,17 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ### Problems by Topic
 
 <details>
-<summary><strong>Arrays & Hashing</strong> — 10 problems</summary>
+<summary><strong>Arrays & Hashing</strong> — 8 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0001 | Two Sum | Easy |
 | 0013 | Roman to Integer | Easy |
 | 0049 | Group Anagrams | Medium |
-| 0121 | Best Time to Buy and Sell Stock | Easy |
 | 0164 | Maximum Gap | Medium |
 | 0217 | Contains Duplicate | Easy |
-| 0238 | Product of Array Except Self | Medium |
 | 0242 | Valid Anagram | Easy |
-| 0451 | Sort Characters by Frequency | Medium |
+| 0451 | Sort Characters By Frequency | Medium |
 | 0837 | Most Common Word | Easy |
 
 </details>
@@ -79,22 +77,23 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Difficulty |
 |---|---------|------------|
+| 0005 | Longest Palindromic Substring | Medium |
 | 0011 | Container With Most Water | Medium |
 | 0015 | 3Sum | Medium |
 | 0026 | Remove Duplicates from Sorted Array | Easy |
 | 0125 | Valid Palindrome | Easy |
 | 0167 | Two Sum II - Input Array Is Sorted | Medium |
 | 0283 | Move Zeroes | Easy |
-| 0874 | Backspace String Compare | Easy |
 
 </details>
 
 <details>
-<summary><strong>Sliding Window</strong> — 7 problems</summary>
+<summary><strong>Sliding Window</strong> — 8 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0003 | Longest Substring Without Repeating Characters | Medium |
+| 0121 | Best Time to Buy and Sell Stock | Easy |
 | 0209 | Minimum Size Subarray Sum | Medium |
 | 0567 | Permutation in String | Medium |
 | 0643 | Maximum Average Subarray I | Easy |
@@ -105,7 +104,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Stack</strong> — 5 problems</summary>
+<summary><strong>Stack</strong> — 6 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
@@ -114,6 +113,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | 0150 | Evaluate Reverse Polish Notation | Medium |
 | 0496 | Next Greater Element I | Easy |
 | 0739 | Daily Temperatures | Medium |
+| 0874 | Backspace String Compare | Easy |
 
 </details>
 
@@ -162,11 +162,10 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Dynamic Programming</strong> — 8 problems</summary>
+<summary><strong>Dynamic Programming</strong> — 7 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
-| 0005 | Longest Palindromic Substring | Medium |
 | 0070 | Climbing Stairs | Easy |
 | 0198 | House Robber | Medium |
 | 0213 | House Robber II | Medium |
@@ -187,15 +186,24 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 </details>
 
+<details>
+<summary><strong>Prefix Sum</strong> — 1 problem</summary>
+
+| # | Problem | Difficulty |
+|---|---------|------------|
+| 0238 | Product of Array Except Self | Medium |
+
+</details>
+
 ### Recently Added
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 874 | Backspace String Compare | Two Pointers | Easy |
 | 283 | Move Zeroes | Two Pointers | Easy |
-| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
-| 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
-| 15 | 3Sum | Two Pointers | Medium |
+| 55 | Jump Game | Greedy | Medium |
+| 134 | Gas Station | Greedy | Medium |
+| 13 | Roman to Integer | Arrays & Hashing | Easy |
+| 2 | Add Two Numbers | Linked List | Medium |
 
 <!-- TRACKER_END -->
 

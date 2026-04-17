@@ -57,16 +57,16 @@ VALID_TOPICS: frozenset[str] = frozenset({
 # ---------------------------------------------------------------------------
 # Each entry is (category, [(regex_pattern_string, weight), ...]).
 # Patterns are compiled once at module load with re.MULTILINE so that ^ / $
-# anchors work per-line and .* does NOT cross line boundaries by default
-# (which makes patterns safer).
+# anchors work per-line.  re.IGNORECASE is intentionally NOT set for most
+# patterns so that ``ListNode`` and ``listnode`` are distinguished.
 # ---------------------------------------------------------------------------
 _RAW_SIGNALS: list[tuple[str, list[tuple[str, int]]]] = [
     # ── Linked list ─────────────────────────────────────────────────────────
     ("linked_list", [
-        (r"\bListNode\b", 3),                         # class reference
-        (r"\bself\.next\b", 3),                       # node's own pointer
-        (r"\b(?:curr|current|prev|node)\.next\b", 2), # traversal pattern
-        (r"\.next\s*=", 2),                           # pointer reassignment
+        (r"\bListNode\b", 3),
+        (r"\bself\.next\b", 3),
+        (r"\b(?:curr|current|prev|node)\.next\b", 2),
+        (r"\.next\s*=", 2),
     ]),
 
     # ── Trees ────────────────────────────────────────────────────────────────
@@ -87,10 +87,10 @@ _RAW_SIGNALS: list[tuple[str, list[tuple[str, int]]]] = [
     # ── Binary search ────────────────────────────────────────────────────────
     ("binary_search", [
         (r"\bbisect(?:_left|_right)?\b", 3),
-        # classic mid calculation
+        # Classic mid calculation with full names
         (r"\bmid\s*=\s*\(?(?:left|lo)\s*\+\s*(?:right|hi)\b", 3),
         (r"\bmid\s*=\s*(?:left|lo)\s*\+\s*\((?:right|hi)", 3),
-        # loop condition
+        # Loop conditions with full names
         (r"\bwhile\s+(?:left|lo)\s*<=\s*(?:right|hi)\b", 3),
     ]),
 
@@ -100,58 +100,64 @@ _RAW_SIGNALS: list[tuple[str, list[tuple[str, int]]]] = [
         (r"\badj(?:acent|acency)?\b", 3),
         (r"\bgraph\s*=\s*(?:defaultdict|dict|\{|\[)", 2),
         (r"\bdirections\s*=\s*\[", 2),
-        # BFS via deque (but not just any deque — paired with visited)
         (r"\bqueue\s*=\s*(?:collections\.)?deque\b", 2),
-        # BFS/DFS are 1 point only — function names like `def dfs` appear in
-        # backtracking problems too; real graph signals are visited/adj.
+        # BFS/DFS in comments or docstrings — only weight 1 because function
+        # names like `def dfs` appear in backtracking problems too.
         (r"\b(?:BFS|DFS)\b", 1),
-        (r"\bdeque\b", 1),                            # weak alone
+        (r"\bdeque\b", 1),
     ]),
 
     # ── Dynamic programming ──────────────────────────────────────────────────
     ("dynamic_programming", [
         (r"@(?:cache|lru_cache)\b", 3),
         (r"\bfunctools\.(?:cache|lru_cache)\b", 3),
-        (r"\bdp\s*=\s*\[", 3),                        # DP table
-        (r"\bdp\[", 2),                               # DP table access
-        (r"\bmemo\s*=\s*\{", 2),                      # memoisation dict
-        (r"\bmemo\b", 1),                             # bare name, weak
+        (r"\bdp\s*=\s*\[", 3),
+        (r"\bdp\[", 2),
+        (r"\bmemo\s*=\s*\{", 2),
+        (r"\bmemo\b", 1),
     ]),
 
     # ── Backtracking ─────────────────────────────────────────────────────────
     ("backtracking", [
         (r"\bdef\s+backtrack\b", 3),
         (r"\bbacktrack\s*\(", 2),
-        (r"\bpath\.(?:append|pop)\b", 2),             # path maintenance
+        (r"\bpath\.(?:append|pop)\b", 2),
         (r"\b(?:res|result)\.append\s*\(\s*path\[:\]\s*\)", 3),
         (r"\b(?:permutations?|combinations?)\b", 1),
         # In-place cell marking & restore — canonical board backtracking
         (r"""board\[.*\]\s*=\s*["']#["']""", 3),
-        (r"\btemp\s*=\s*board\b", 2),                 # save-restore pattern
+        (r"\btemp\s*=\s*board\b", 2),
     ]),
 
     # ── Stack ────────────────────────────────────────────────────────────────
+    # Patterns cover both plain `stack` and named variants like `stack_s`,
+    # `stack_t`, `left_stack`, etc.
     ("stack", [
-        (r"\bstack\s*=\s*\[\]", 3),
-        (r"\bstack\.(?:append|pop)\b", 2),
-        (r"\bstack\[-1\]", 2),                        # peek at top
+        (r"\b\w*[Ss]tack\w*\s*=\s*\[\]", 3),           # any *stack* = []
+        (r"\b\w*[Ss]tack\w*\.(?:append|pop)\b", 2),     # push / pop
+        (r"\b\w*[Ss]tack\w*\[-1\]", 2),                 # peek at top
         (r"\bmonotonic\b", 2),
     ]),
 
     # ── Intervals ────────────────────────────────────────────────────────────
     ("intervals", [
         (r"\bintervals\b", 2),
-        (r"\bend\s*=\s*max\s*\(\s*end\s*,", 3),       # merge-interval step
+        (r"\bend\s*=\s*max\s*\(\s*end\s*,", 3),
         (r"\.sort\s*\(\s*key\s*=\s*lambda\s+\w+\s*:\s*\w+\[0\]\)", 2),
     ]),
 
     # ── Prefix sum ───────────────────────────────────────────────────────────
+    # Covers both array-based (prefix[i] = ...) and scalar running-product/sum
+    # accumulation (prefix *= ..., suffix *= ...).
     ("prefix_sum", [
-        (r"\bprefix(?:_sums?|es?)?\s*=\s*\[", 3),
-        (r"\bprefix\[", 2),
+        (r"\bprefix(?:_sums?|es?)?\s*=\s*\[", 3),       # prefix array init
+        (r"\bprefix\[", 2),                              # array indexing
         (r"\bpresum\b", 3),
         (r"\brunning_sum\b", 3),
         (r"\bcumulative\b", 2),
+        # Scalar running-product/sum (e.g. product-except-self)
+        (r"\bprefix\s*[*+]=\s*\S", 2),                  # prefix *= / prefix +=
+        (r"\bsuffix\s*[*+]=\s*\S", 2),                  # suffix *= / suffix +=
     ]),
 
     # ── Sliding window ───────────────────────────────────────────────────────
@@ -160,29 +166,39 @@ _RAW_SIGNALS: list[tuple[str, list[tuple[str, int]]]] = [
         (r"\bmax_(?:len|length)\b", 2),
         (r"\bmin_(?:len|length)\b", 2),
         (r"\bchar_(?:count|freq)\b", 2),
-        # Counter applied to a string argument (distinguishes from array hashing)
         (r"\bCounter\s*\(\s*(?:s|t|word|string|text)\b", 2),
         (r"\bshrink\b", 2),
     ]),
 
     # ── Two pointers ─────────────────────────────────────────────────────────
+    # Covers both full names (left/right) and single-letter (l/r) variants,
+    # plus the expand-around-center pattern used in palindrome problems.
     ("two_pointers", [
-        (r"\bslow\b", 2),                             # slow pointer
-        (r"\bfast\b", 2),                             # fast pointer
-        # convergence loop (< not <= to distinguish from binary search)
+        # Slow / fast pointers
+        (r"\bslow\b", 2),
+        (r"\bfast\b", 2),
+        # Convergence loops — full names
         (r"\bwhile\s+left\s*<\s*right\b", 2),
-        # both ends of the same array accessed together
+        # Array access at both ends — full names
         (r"\bnums\[left\]", 2),
         (r"\bnums\[right\]", 2),
-        # symmetric pointer step
+        # Symmetric steps — full names
         (r"\bright\s*-=\s*1", 1),
         (r"\bleft\s*\+=\s*1", 1),
+        # ── Short-form l / r variants ────────────────────────────────────────
+        # Expand-around-center (palindrome problems)
+        (r"\bdef\s+expand\b", 3),
+        # Classic l/r convergence loop
+        (r"\bwhile\s+l\s*<\s*r\b", 2),
+        # Weak lone cues (only useful when combined with others)
+        (r"\bl\s*=\s*0\b", 1),
+        (r"\br\s*=\s*\d+\b", 1),
     ]),
 
     # ── Greedy ───────────────────────────────────────────────────────────────
     ("greedy", [
-        (r"\bmax_reach\b", 3),                        # jump-game canonical var
-        (r"\btank\b", 2),                             # gas-station canonical var
+        (r"\bmax_reach\b", 3),
+        (r"\btank\b", 2),
         (r"\blocal_(?:max|min)\b", 2),
         (r"\bglobal_(?:max|min)\b", 1),
     ]),
@@ -200,7 +216,7 @@ _RAW_SIGNALS: list[tuple[str, list[tuple[str, int]]]] = [
 
 # Compile all patterns once at import time.
 _SIGNAL_TABLE: list[tuple[str, list[tuple[re.Pattern[str], int]]]] = [
-    (cat, [(re.compile(pat, re.MULTILINE | re.IGNORECASE), w) for pat, w in sigs])
+    (cat, [(re.compile(pat, re.MULTILINE), w) for pat, w in sigs])
     for cat, sigs in _RAW_SIGNALS
 ]
 
@@ -308,12 +324,7 @@ class CodeClassifier:
 # ---------------------------------------------------------------------------
 
 def _read_solution(problem_dir: Path) -> str | None:
-    """Return the content of the Python solution file, or ``None`` if absent.
-
-    LeetSync typically places one ``.py`` file per folder.  If multiple files
-    exist (e.g. alternative solutions), the one whose name most closely matches
-    the slug is preferred; otherwise the first alphabetically is used.
-    """
+    """Return the content of the Python solution file, or ``None`` if absent."""
     if not problem_dir.is_dir():
         return None
 
@@ -324,8 +335,7 @@ def _read_solution(problem_dir: Path) -> str | None:
     if not py_files:
         return None
 
-    # Prefer a file whose stem matches the folder slug (e.g. two-sum.py inside
-    # 1-two-sum/).
+    # Prefer a file whose stem matches the folder slug.
     folder_slug = problem_dir.name.split("-", 1)[1] if "-" in problem_dir.name else ""
     for f in py_files:
         if f.stem == folder_slug:

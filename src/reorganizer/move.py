@@ -85,9 +85,24 @@ def move_problem(
     dest_dir = dest_topic_dir / problem_dir.name
 
     if dest_dir.exists():
-        if verbose:
-            src_rel = problem_dir.relative_to(repo_root)
-            print(f"  [skip]  {src_rel} already at python/{topic}/ — nothing to do")
+        # The problem is already organised at the destination.  The source is a
+        # duplicate (e.g. LeetSync re-submitted an already-organised problem).
+        # Remove it from git rather than leaving a stale copy behind.
+        src_rel = str(problem_dir.relative_to(repo_root))
+        result = subprocess.run(
+            ["git", "rm", "-r", "--force", src_rel],
+            cwd=str(repo_root),
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode == 0:
+            print(f"  [dedup] {src_rel} already organised — duplicate removed")
+        else:
+            # Not tracked by git (e.g. freshly dropped before first commit); just
+            # delete from the filesystem.
+            import shutil
+            shutil.rmtree(problem_dir)
+            print(f"  [dedup] {src_rel} already organised — duplicate deleted")
         return None
 
     if not problem_dir.exists():
