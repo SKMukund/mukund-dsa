@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**52 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**53 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -46,13 +46,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**52 problems solved** (Python)  
-**Difficulty:** 21 Easy · 30 Medium · 1 Hard  
+**53 problems solved** (Python)  
+**Difficulty:** 21 Easy · 31 Medium · 1 Hard  
 **Last updated:** 2026-04-19
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 21 | 30 | 1 | 52 |
+| 21 | 31 | 1 | 53 |
 
 ### Problems by Topic
 
@@ -201,6 +201,15 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0238 | Product of Array Except Self | Medium |
+
+</details>
+
+<details>
+<summary><strong>Uncategorized</strong> — 1 problem</summary>
+
+| # | Problem | Difficulty |
+|---|---------|------------|
+| 0452 | Minimum Number of Arrows to Burst Balloons | Medium |
 
 </details>
 
