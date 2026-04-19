@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
-    # No path filter — LeetSync pushes to the repo root, not python/.
-    # Any push to main triggers this workflow.
   workflow_dispatch:
+
+# Only one run per branch at a time. A new push cancels any in-progress run
+# so we never get two concurrent pushes racing each other.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -14,6 +18,11 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+
+    # Skip commits made by this workflow to break the trigger loop.
+    # Belt-and-suspenders: the commit message also carries [skip ci].
+    if: github.actor != 'github-actions[bot]'
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,20 +34,31 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Relocate new problems + update tracker
-        run: python scripts/run.py --verbose
-
-      - name: Commit changes (if any)
+      # Configure identity before running the script so git mv operations
+      # (called inside move.py) have a consistent author set.
+      - name: Configure git identity
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stage moved folders (git mv already staged in index) + README
-          git add README.md python/
+      - name: Relocate new problems and update tracker
+        run: python scripts/run.py --verbose
+
+      - name: Commit and push changes (if any)
+        run: |
+          # Stage everything that the pipeline may have touched.
+          git add README.md config/ python/
+
+          echo "=== Staged diff ==="
+          git diff --cached --stat
 
           if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "chore: reorganize and sync tracker — $(date -u +'%Y-%m-%d')"
-            git push origin HEAD
+            echo "Nothing to commit — tracker is already up-to-date."
+            exit 0
           fi
+
+          git commit -m "chore(tracker): auto-update leetcode structure and README [skip ci]"
+
+          # Retry once with a rebase in case a concurrent push landed first.
+          git push origin HEAD \
+            || (git pull --rebase origin main && git push origin HEAD)
