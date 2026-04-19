@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**51 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**52 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -46,13 +46,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**51 problems solved** (Python)  
-**Difficulty:** 21 Easy · 29 Medium · 1 Hard  
-**Last updated:** 2026-04-16
+**52 problems solved** (Python)  
+**Difficulty:** 21 Easy · 30 Medium · 1 Hard  
+**Last updated:** 2026-04-19
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 21 | 29 | 1 | 51 |
+| 21 | 30 | 1 | 52 |
 
 ### Problems by Topic
 
@@ -183,6 +183,15 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 |---|---------|------------|
 | 0055 | Jump Game | Medium |
 | 0134 | Gas Station | Medium |
+
+</details>
+
+<details>
+<summary><strong>Intervals</strong> — 1 problem</summary>
+
+| # | Problem | Difficulty |
+|---|---------|------------|
+| 0435 | Non-overlapping Intervals | Medium |
 
 </details>
 
