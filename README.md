@@ -4,7 +4,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**53 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**54 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 
@@ -46,13 +46,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**53 problems solved** (Python)  
-**Difficulty:** 21 Easy · 31 Medium · 1 Hard  
-**Last updated:** 2026-04-19
+**54 problems solved** (Python)  
+**Difficulty:** 22 Easy · 31 Medium · 1 Hard  
+**Last updated:** 2026-04-20
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 21 | 31 | 1 | 53 |
+| 22 | 31 | 1 | 54 |
 
 ### Problems by Topic
 
@@ -205,11 +205,12 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Uncategorized</strong> — 1 problem</summary>
+<summary><strong>Uncategorized</strong> — 2 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0452 | Minimum Number of Arrows to Burst Balloons | Medium |
+| 0890 | Lemonade Change | Easy |
 
 </details>
 
@@ -217,11 +218,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
+| 452 | Minimum Number of Arrows to Burst Balloons | Uncategorized | Medium |
 | 5 | Longest Palindromic Substring | Two Pointers | Medium |
 | 283 | Move Zeroes | Two Pointers | Easy |
 | 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
 | 167 | Two Sum II - Input Array Is Sorted | Two Pointers | Medium |
-| 15 | 3Sum | Two Pointers | Medium |
 
 <!-- TRACKER_END -->
 
