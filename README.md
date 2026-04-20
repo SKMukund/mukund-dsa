@@ -221,10 +221,10 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
 | 890 | Lemonade Change | Uncategorized | Easy |
-| 135 | Candy | Uncategorized | Hard |
 | 452 | Minimum Number of Arrows to Burst Balloons | Uncategorized | Medium |
-| 435 | Non-overlapping Intervals | Intervals | Medium |
+| 135 | Candy | Uncategorized | Hard |
 | 5 | Longest Palindromic Substring | Two Pointers | Medium |
+| 283 | Move Zeroes | Two Pointers | Easy |
 
 <details>
 <summary>⚠️ Low-confidence classifications (3) — may need review</summary>
