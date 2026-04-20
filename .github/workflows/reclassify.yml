@@ -1,0 +1,52 @@
+name: Reclassify Uncategorized Problems
+
+on:
+  workflow_dispatch:
+
+# Only one manual run at a time.
+concurrency:
+  group: reclassify
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  reclassify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Reclassify uncategorized problems
+        run: python scripts/reclassify.py --verbose
+
+      - name: Commit and push changes (if any)
+        run: |
+          git add README.md config/ python/
+
+          echo "=== Staged diff ==="
+          git diff --cached --stat
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — all problems are still uncategorized."
+            exit 0
+          fi
+
+          git commit -m "chore: reclassify uncategorized problems [skip ci]"
+
+          git push origin HEAD \
+            || (git pull --rebase origin main && git push origin HEAD)

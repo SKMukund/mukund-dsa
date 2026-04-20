@@ -288,6 +288,16 @@ python/{topic}/{N}-{problem-name}/
 
 ---
 
+## 🔧 Maintenance
+
+**Reclassify uncategorized problems** — if the code classifier has been improved (new signals added) and you want to retry problems stuck in `python/uncategorized/`, trigger this workflow manually:
+
+[▶ Run Reclassification Workflow](../../actions/workflows/reclassify.yml)
+
+This runs `scripts/reclassify.py`, which scans only `python/uncategorized/`, attempts heuristic classification on each problem, moves any it can confidently resolve, and updates the README tracker. Already-categorized problems are never touched.
+
+---
+
 ## ⚙️ Notes
 
 - **Automation** — a GitHub Actions workflow (`sync.yml`) triggers on every push to `python/**`. It runs `scripts/run.py`, which scans all solution folders, recomputes statistics, and rewrites the Progress section of this README between the tracker markers.
