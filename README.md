@@ -49,7 +49,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 **55 problems solved** (Python)  
 **Difficulty:** 22 Easy · 31 Medium · 2 Hard  
 **Last updated:** 2026-04-20
-**Unreviewed classifications:** 3
+**Unreviewed classifications:** 2
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
@@ -178,12 +178,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Greedy</strong> — 2 problems</summary>
+<summary><strong>Greedy</strong> — 3 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0055 | Jump Game | Medium |
 | 0134 | Gas Station | Medium |
+| 0135 | Candy | Hard |
 
 </details>
 
@@ -206,11 +207,10 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Uncategorized</strong> — 3 problems</summary>
+<summary><strong>Uncategorized</strong> — 2 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
-| 0135 | Candy | Hard |
 | 0452 | Minimum Number of Arrows to Burst Balloons | Medium |
 | 0890 | Lemonade Change | Easy |
 
@@ -222,18 +222,17 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 |---|---------|-------|------------|
 | 890 | Lemonade Change | Uncategorized | Easy |
 | 452 | Minimum Number of Arrows to Burst Balloons | Uncategorized | Medium |
-| 135 | Candy | Uncategorized | Hard |
+| 135 | Candy | Greedy | Hard |
 | 5 | Longest Palindromic Substring | Two Pointers | Medium |
 | 283 | Move Zeroes | Two Pointers | Easy |
 
 <details>
-<summary>⚠️ Low-confidence classifications (3) — may need review</summary>
+<summary>⚠️ Low-confidence classifications (2) — may need review</summary>
 
 These problems were classified by heuristic with low confidence, or could not be classified at all. Consider adding them manually to `config/topics.json`.
 
 | # | Problem | Category | Confidence | Source |
 |---|---------|----------|------------|--------|
-| 135 | Candy | Uncategorized | low | fallback |
 | 452 | Minimum Number of Arrows to Burst Balloons | Uncategorized | low | fallback |
 | 890 | Lemonade Change | Uncategorized | low | fallback |
 
