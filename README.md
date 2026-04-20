@@ -291,7 +291,7 @@ python/{topic}/{N}-{problem-name}/
 
 **Reclassify uncategorized problems** — if the code classifier has been improved (new signals added) and you want to retry problems stuck in `python/uncategorized/`, trigger this workflow manually:
 
-[▶ Run Reclassification Workflow](../../actions/workflows/reclassify.yml)
+[![Run Reclassification Workflow](https://img.shields.io/badge/%E2%96%B6_Run-Reclassify%20Uncategorized-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](../../actions/workflows/reclassify.yml)
 
 This runs `scripts/reclassify.py`, which scans only `python/uncategorized/`, attempts heuristic classification on each problem, moves any it can confidently resolve, and updates the README tracker. Already-categorized problems are never touched.
 
