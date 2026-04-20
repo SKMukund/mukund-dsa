@@ -12,6 +12,7 @@ fallback is retained for the rare case where no README is present.
 from __future__ import annotations
 
 import re
+import subprocess
 from pathlib import Path
 
 _FOLDER_RE = re.compile(r"^(\d+)-(.+)$")
@@ -95,3 +96,27 @@ def get_last_modified(problem_dir: Path) -> float:
     if not files:
         return problem_dir.stat().st_mtime
     return max(f.stat().st_mtime for f in files)
+
+
+def get_git_commit_time(problem_dir: Path, repo_root: Path) -> float:
+    """Return the Unix timestamp of the most recent git commit touching this folder.
+
+    More reliable than filesystem mtime for sorting recently-added problems:
+    git mv preserves original file timestamps, so mtime-based sorting would
+    leave moved/reorganized problems stuck at their original LeetSync position.
+
+    Falls back to filesystem mtime if git is unavailable or returns nothing.
+    """
+    rel = str(problem_dir.relative_to(repo_root))
+    result = subprocess.run(
+        ["git", "log", "--format=%ct", "-1", "--", rel],
+        cwd=str(repo_root),
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode == 0 and result.stdout.strip():
+        try:
+            return float(result.stdout.strip())
+        except ValueError:
+            pass
+    return get_last_modified(problem_dir)

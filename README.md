@@ -214,11 +214,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 890 | Lemonade Change | Greedy | Easy |
 | 452 | Minimum Number of Arrows to Burst Balloons | Intervals | Medium |
+| 890 | Lemonade Change | Greedy | Easy |
+| 135 | Candy | Greedy | Hard |
+| 435 | Non-overlapping Intervals | Intervals | Medium |
 | 5 | Longest Palindromic Substring | Two Pointers | Medium |
-| 283 | Move Zeroes | Two Pointers | Easy |
-| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
 
 <!-- TRACKER_END -->
 

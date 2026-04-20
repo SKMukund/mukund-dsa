@@ -6,7 +6,7 @@ from pathlib import Path
 
 from src.reorganizer.classify import TopicClassifier
 from src.reorganizer.models import Problem
-from src.reorganizer.parse import get_last_modified, list_problem_files, parse_problem_dir
+from src.reorganizer.parse import get_git_commit_time, list_problem_files, parse_problem_dir
 from src.reorganizer.scan import find_problem_dirs
 
 
@@ -64,7 +64,7 @@ def build_problem_list(
                 topic=tr.topic,
                 source_dir=problem_dir,
                 files=list_problem_files(problem_dir),
-                last_modified=get_last_modified(problem_dir),
+                last_modified=get_git_commit_time(problem_dir, repo_root),
                 confidence=tr.confidence,
                 classification_source=tr.source,
             )
