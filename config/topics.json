@@ -19,6 +19,7 @@
   "121-best-time-to-buy-and-sell-stock": "sliding_window",
   "125-valid-palindrome": "two_pointers",
   "134-gas-station": "greedy",
+  "135-candy": "greedy",
   "150-evaluate-reverse-polish-notation": "stack",
   "153-find-minimum-in-rotated-sorted-array": "binary_search",
   "164-maximum-gap": "arrays_and_hashing",
