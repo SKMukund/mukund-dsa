@@ -49,6 +49,7 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 **55 problems solved** (Python)  
 **Difficulty:** 22 Easy · 31 Medium · 2 Hard  
 **Last updated:** 2026-04-20
+**Unreviewed classifications:** 3
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
@@ -220,10 +221,23 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
 | 890 | Lemonade Change | Uncategorized | Easy |
+| 135 | Candy | Uncategorized | Hard |
 | 452 | Minimum Number of Arrows to Burst Balloons | Uncategorized | Medium |
+| 435 | Non-overlapping Intervals | Intervals | Medium |
 | 5 | Longest Palindromic Substring | Two Pointers | Medium |
-| 283 | Move Zeroes | Two Pointers | Easy |
-| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
+
+<details>
+<summary>⚠️ Low-confidence classifications (3) — may need review</summary>
+
+These problems were classified by heuristic with low confidence, or could not be classified at all. Consider adding them manually to `config/topics.json`.
+
+| # | Problem | Category | Confidence | Source |
+|---|---------|----------|------------|--------|
+| 135 | Candy | Uncategorized | low | fallback |
+| 452 | Minimum Number of Arrows to Burst Balloons | Uncategorized | low | fallback |
+| 890 | Lemonade Change | Uncategorized | low | fallback |
+
+</details>
 
 <!-- TRACKER_END -->
 

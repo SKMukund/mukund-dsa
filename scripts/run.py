@@ -76,12 +76,13 @@ def _phase1_relocate(
             print(f"  [skip]  {problem_dir.name} — could not parse: {exc}")
             continue
 
-        topic = classifier.classify(
+        tr = classifier.classify(
             problem_dir.name,
             fallback_topic=_FALLBACK_TOPIC,
             problem_dir=problem_dir,
             verbose=verbose,
         )
+        topic = tr.topic
         src_rel = problem_dir.relative_to(repo_root)
         dest = repo_root / "python" / topic / problem_dir.name
 
@@ -123,12 +124,13 @@ def _phase2_reconcile(
         except ValueError:
             continue
 
-        authoritative = classifier.classify(
+        tr = classifier.classify(
             problem_dir.name,
             fallback_topic=raw_topic,
             problem_dir=problem_dir,
             verbose=verbose,
         )
+        authoritative = tr.topic
 
         if authoritative == raw_topic:
             continue  # already in the right place

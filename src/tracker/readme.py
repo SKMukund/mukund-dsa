@@ -133,6 +133,10 @@ def _render_tracker(
     now = datetime.datetime.now(_PST).strftime("%Y-%m-%d")
 
     lines: list[str] = []
+    low_confidence = [
+        p for p in problems
+        if p.confidence == "low" or p.classification_source == "fallback" and p.topic == "uncategorized"
+    ]
 
     # ── Summary headline ──────────────────────────────────────────────────
     langs = " · ".join(language_display_name(l) for l in stats["by_language"])
@@ -147,6 +151,8 @@ def _render_tracker(
     lines.append(f"**{stats['total']} problems solved** ({langs})  ")
     lines.append(f"**Difficulty:** {diff_str}  ")
     lines.append(f"**Last updated:** {now}")
+    if low_confidence:
+        lines.append(f"**Unreviewed classifications:** {len(low_confidence)}")
     lines.append("")
 
     # ── Difficulty breakdown table ────────────────────────────────────────
@@ -189,6 +195,31 @@ def _render_tracker(
             f"| {p.number} | {p.title} | {topic_display_name(p.topic)} | {diff_label} |"
         )
     lines.append("")
+
+    # ── Low-confidence classifications ────────────────────────────────────
+    if low_confidence:
+        lines.append("<details>")
+        lines.append(
+            f"<summary>⚠️ Low-confidence classifications "
+            f"({len(low_confidence)}) — may need review</summary>"
+        )
+        lines.append("")
+        lines.append(
+            "These problems were classified by heuristic with low confidence, "
+            "or could not be classified at all. "
+            "Consider adding them manually to `config/topics.json`."
+        )
+        lines.append("")
+        lines.append("| # | Problem | Category | Confidence | Source |")
+        lines.append("|---|---------|----------|------------|--------|")
+        for p in sorted(low_confidence, key=lambda p: p.number):
+            lines.append(
+                f"| {p.number} | {p.title} | {topic_display_name(p.topic)} "
+                f"| {p.confidence or '—'} | {p.classification_source or '—'} |"
+            )
+        lines.append("")
+        lines.append("</details>")
+        lines.append("")
 
     return "\n".join(lines)
 

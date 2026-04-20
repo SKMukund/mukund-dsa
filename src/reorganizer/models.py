@@ -29,6 +29,8 @@ class Problem:
     source_dir: Path
     files: list[Path] = field(default_factory=list)
     last_modified: float = 0.0
+    confidence: str = ""              # "high" | "medium" | "low"
+    classification_source: str = ""   # "override" | "heuristic" | "fallback"
 
     @property
     def folder_name(self) -> str:

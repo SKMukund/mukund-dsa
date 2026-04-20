@@ -42,7 +42,7 @@ def build_problem_list(
             print(f"  [skip]  {problem_dir} — {exc}")
             continue
 
-        topic = classifier.classify(
+        tr = classifier.classify(
             problem_dir.name,
             fallback_topic=raw_topic,
             problem_dir=problem_dir,
@@ -50,7 +50,10 @@ def build_problem_list(
         )
 
         if verbose:
-            print(f"  [parse] #{number:>4} {title} (python/{raw_topic}) → topic={topic}")
+            print(
+                f"  [parse] #{number:>4} {title} (python/{raw_topic}) "
+                f"→ topic={tr.topic} ({tr.confidence}, {tr.source})"
+            )
 
         problems.append(
             Problem(
@@ -58,10 +61,12 @@ def build_problem_list(
                 slug=slug,
                 title=title,
                 language=language,
-                topic=topic,
+                topic=tr.topic,
                 source_dir=problem_dir,
                 files=list_problem_files(problem_dir),
                 last_modified=get_last_modified(problem_dir),
+                confidence=tr.confidence,
+                classification_source=tr.source,
             )
         )
 

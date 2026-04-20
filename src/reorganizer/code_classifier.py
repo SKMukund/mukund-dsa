@@ -233,13 +233,15 @@ class ClassificationResult:
     """Outcome of a code-based classification attempt.
 
     Attributes:
-        category:  Winning category slug, or ``None`` if classification failed.
-        scores:    Raw score per category (only non-zero categories included).
-        signals:   List of ``(category, pattern_string)`` for every match.
-        reason:    Human-readable explanation of the outcome.
+        category:   Winning category slug, or ``None`` if classification failed.
+        confidence: "high" | "medium" | "low" | "" (empty when category is None).
+        scores:     Raw score per category (only non-zero categories included).
+        signals:    List of ``(category, pattern_string)`` for every match.
+        reason:     Human-readable explanation of the outcome.
     """
     category: str | None
-    scores: dict[str, int]
+    confidence: str = ""          # "high" | "medium" | "low"
+    scores: dict[str, int] = field(default_factory=dict)
     signals: list[tuple[str, str]] = field(default_factory=list)
     reason: str = ""
 
@@ -276,6 +278,7 @@ class CodeClassifier:
             )
 
         scores: dict[str, int] = {}
+        strong_hits: dict[str, int] = {}   # weight-3 signal count per category
         signals: list[tuple[str, str]] = []
 
         for category, patterns in _SIGNAL_TABLE:
@@ -283,12 +286,12 @@ class CodeClassifier:
                 if compiled.search(code):
                     scores[category] = scores.get(category, 0) + weight
                     signals.append((category, compiled.pattern))
+                    if weight == 3:
+                        strong_hits[category] = strong_hits.get(category, 0) + 1
 
         if not scores:
             return ClassificationResult(
                 category=None,
-                scores={},
-                signals=[],
                 reason="no signals detected in code",
             )
 
@@ -311,8 +314,11 @@ class CodeClassifier:
                 ),
             )
 
+        confidence = _compute_confidence(best_score, strong_hits.get(best_cat, 0))
+
         return ClassificationResult(
             category=best_cat,
+            confidence=confidence,
             scores=scores,
             signals=signals,
             reason="classified by code analysis",
@@ -322,6 +328,20 @@ class CodeClassifier:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def _compute_confidence(score: int, strong_hit_count: int) -> str:
+    """Map a category score + strong-signal count to a confidence label.
+
+    High:   score ≥ 6 AND at least 2 weight-3 signals fired.
+    Medium: score ≥ 3 (but not high).
+    Low:    score < 3 (just meets MIN_SCORE=2 — weak or ambiguous signals).
+    """
+    if score >= 6 and strong_hit_count >= 2:
+        return "high"
+    if score >= 3:
+        return "medium"
+    return "low"
+
 
 def _read_solution(problem_dir: Path) -> str | None:
     """Return the content of the Python solution file, or ``None`` if absent."""

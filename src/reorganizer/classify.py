@@ -32,6 +32,7 @@ human-readable without needing a separate number-to-slug lookup.
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 from src.reorganizer.code_classifier import CodeClassifier
@@ -40,6 +41,22 @@ _DEFAULT_TOPIC = "uncategorized"
 
 # Instantiate once at module level; it holds no mutable state.
 _code_classifier = CodeClassifier()
+
+
+@dataclass
+class TopicResult:
+    """Full classification outcome returned by TopicClassifier.classify().
+
+    Attributes:
+        topic:      Winning category slug (e.g. "linked_list").
+        confidence: "high" | "medium" | "low" — how certain the classifier is.
+        source:     "override"  — from config/topics.json manual entry
+                    "heuristic" — inferred from solution code
+                    "fallback"  — inferred from existing folder layout or default
+    """
+    topic: str
+    confidence: str   # "high" | "medium" | "low"
+    source: str       # "override" | "heuristic" | "fallback"
 
 
 def _sort_key(folder_name: str) -> int:
@@ -85,8 +102,8 @@ class TopicClassifier:
         fallback_topic: str | None = None,
         problem_dir: Path | None = None,
         verbose: bool = False,
-    ) -> str:
-        """Return the topic slug for *folder_name*.
+    ) -> TopicResult:
+        """Return a TopicResult for *folder_name*.
 
         Args:
             folder_name:    LeetSync folder name, e.g. ``"1-two-sum"``.
@@ -99,11 +116,15 @@ class TopicClassifier:
             verbose:        Print per-problem signal details.
 
         Returns:
-            A topic slug such as ``"linked_list"`` or ``"uncategorized"``.
+            A :class:`TopicResult` with topic, confidence, and source.
         """
         # ── 1. Config (authoritative) ──────────────────────────────────────
         if folder_name in self._map:
-            return self._map[folder_name]
+            return TopicResult(
+                topic=self._map[folder_name],
+                confidence="high",
+                source="override",
+            )
 
         # ── 2. Code analysis ───────────────────────────────────────────────
         # Only attempt when we would otherwise fall back to "uncategorized".
@@ -117,16 +138,24 @@ class TopicClassifier:
                 self._map[folder_name] = result.category
                 self._dirty = True
 
+                score = result.scores.get(result.category, 0)
                 detected = [sig for cat, sig in result.signals if cat == result.category]
                 if verbose:
                     print(
                         f"  [classify] {folder_name} → {result.category} "
-                        f"(score={result.scores.get(result.category, 0)}, "
-                        f"signals={detected})"
+                        f"({result.confidence}, heuristic) | "
+                        f"score={score} signals={detected}"
                     )
                 else:
-                    print(f"  [classify] {folder_name} → {result.category}")
-                return result.category
+                    print(
+                        f"  [classify] {folder_name} → {result.category} "
+                        f"({result.confidence}, heuristic)"
+                    )
+                return TopicResult(
+                    topic=result.category,
+                    confidence=result.confidence,
+                    source="heuristic",
+                )
 
             # Code analysis was inconclusive — log why.
             print(
@@ -136,10 +165,18 @@ class TopicClassifier:
 
         # ── 3. Folder-layout fallback ──────────────────────────────────────
         if fallback_topic and fallback_topic != _DEFAULT_TOPIC:
-            return fallback_topic
+            return TopicResult(
+                topic=fallback_topic,
+                confidence="medium",
+                source="fallback",
+            )
 
         # ── 4. Default ────────────────────────────────────────────────────
-        return _DEFAULT_TOPIC
+        return TopicResult(
+            topic=_DEFAULT_TOPIC,
+            confidence="low",
+            source="fallback",
+        )
 
     def is_dirty(self) -> bool:
         """Return True if the map has unsaved changes."""
