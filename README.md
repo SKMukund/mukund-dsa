@@ -222,9 +222,9 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 |---|---------|-------|------------|
 | 890 | Lemonade Change | Uncategorized | Easy |
 | 452 | Minimum Number of Arrows to Burst Balloons | Uncategorized | Medium |
-| 135 | Candy | Greedy | Hard |
 | 5 | Longest Palindromic Substring | Two Pointers | Medium |
 | 283 | Move Zeroes | Two Pointers | Easy |
+| 26 | Remove Duplicates from Sorted Array | Two Pointers | Easy |
 
 <details>
 <summary>⚠️ Low-confidence classifications (2) — may need review</summary>
