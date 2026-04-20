@@ -295,7 +295,7 @@ python/{topic}/{N}-{problem-name}/
 
 [![Run Reclassification Workflow](https://img.shields.io/badge/%E2%96%B6_Run-Reclassify%20Uncategorized-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](../../actions/workflows/reclassify.yml)
 
-This runs `scripts/reclassify.py`, which scans only `python/uncategorized/`, attempts heuristic classification on each problem, moves any it can confidently resolve, and updates the README tracker. Already-categorized problems are never touched.
+This runs `scripts/reclassify.py`, which scans only `python/uncategorized/`, attempts heuristic classification on each problem, moves any it can confidently resolve, and updates the README tracker. Already-categorized problems are never touched. Manually update the problem in config/topic.json if the problem is still in the uncategorized folder.
 
 ---
 <a id="notes"></a>
