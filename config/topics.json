@@ -12,6 +12,7 @@
   "35-search-insert-position": "binary_search",
   "49-group-anagrams": "arrays_and_hashing",
   "55-jump-game": "greedy",
+  "56-merge-intervals": "intervals",
   "69-sqrtx": "binary_search",
   "70-climbing-stairs": "dynamic_programming",
   "79-word-search": "backtracking",
