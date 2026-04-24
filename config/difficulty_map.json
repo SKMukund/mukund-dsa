@@ -42,6 +42,7 @@
   "55-jump-game": "Medium",
   "56-merge-intervals": "Medium",
   "567-permutation-in-string": "Medium",
+  "57-insert-interval": "Medium",
   "643-maximum-average-subarray-i": "Easy",
   "69-sqrtx": "Easy",
   "695-max-area-of-island": "Medium",

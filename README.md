@@ -5,7 +5,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**56 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**57 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 [![Run Reclassification](https://img.shields.io/badge/Reclassify-Uncategorized-blue?style=for-the-badge)](../../actions/workflows/reclassify.yml)
@@ -49,13 +49,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**56 problems solved** (Python)  
-**Difficulty:** 22 Easy · 32 Medium · 2 Hard  
+**57 problems solved** (Python)  
+**Difficulty:** 22 Easy · 33 Medium · 2 Hard  
 **Last updated:** 2026-04-23
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 22 | 32 | 2 | 56 |
+| 22 | 33 | 2 | 57 |
 
 ### Problems by Topic
 
@@ -192,11 +192,12 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
-<summary><strong>Intervals</strong> — 3 problems</summary>
+<summary><strong>Intervals</strong> — 4 problems</summary>
 
 | # | Problem | Difficulty |
 |---|---------|------------|
 | 0056 | Merge Intervals | Medium |
+| 0057 | Insert Interval | Medium |
 | 0435 | Non-overlapping Intervals | Medium |
 | 0452 | Minimum Number of Arrows to Burst Balloons | Medium |
 
@@ -215,11 +216,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
+| 57 | Insert Interval | Intervals | Medium |
 | 56 | Merge Intervals | Intervals | Medium |
 | 452 | Minimum Number of Arrows to Burst Balloons | Intervals | Medium |
 | 890 | Lemonade Change | Greedy | Easy |
 | 135 | Candy | Greedy | Hard |
-| 435 | Non-overlapping Intervals | Intervals | Medium |
 
 <!-- TRACKER_END -->
 
