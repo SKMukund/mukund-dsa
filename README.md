@@ -5,7 +5,7 @@ A continuously maintained, automated log of LeetCode problems, organized by algo
 
 This repository demonstrates consistency in problem-solving, structured learning across core algorithmic patterns, and practical engineering to manage large-scale interview preparation.
 
-**57 problems solved across core algorithmic patterns (automatically tracked and updated).**
+**58 problems solved across core algorithmic patterns (automatically tracked and updated).**
 
 ---
 [![Run Reclassification](https://img.shields.io/badge/Reclassify-Uncategorized-blue?style=for-the-badge)](../../actions/workflows/reclassify.yml)
@@ -49,13 +49,13 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 ## 📊 Progress
 
 <!-- TRACKER_START -->
-**57 problems solved** (Python)  
-**Difficulty:** 22 Easy · 33 Medium · 2 Hard  
-**Last updated:** 2026-04-23
+**58 problems solved** (Python)  
+**Difficulty:** 22 Easy · 34 Medium · 2 Hard  
+**Last updated:** 2026-04-24
 
 | Easy | Medium | Hard | Total |
 |------|--------|------|-------|
-| 22 | 33 | 2 | 57 |
+| 22 | 34 | 2 | 58 |
 
 ### Problems by Topic
 
@@ -143,6 +143,15 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 </details>
 
 <details>
+<summary><strong>Heap / Priority Queue</strong> — 1 problem</summary>
+
+| # | Problem | Difficulty |
+|---|---------|------------|
+| 0253 | Meeting Rooms II | Medium |
+
+</details>
+
+<details>
 <summary><strong>Graphs (BFS / DFS)</strong> — 5 problems</summary>
 
 | # | Problem | Difficulty |
@@ -216,11 +225,11 @@ To register a new problem, add its number to `config/topics.json` and `config/ti
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
+| 253 | Meeting Rooms II | Heap / Priority Queue | Medium |
 | 57 | Insert Interval | Intervals | Medium |
 | 56 | Merge Intervals | Intervals | Medium |
 | 452 | Minimum Number of Arrows to Burst Balloons | Intervals | Medium |
 | 890 | Lemonade Change | Greedy | Easy |
-| 135 | Candy | Greedy | Hard |
 
 <!-- TRACKER_END -->
 

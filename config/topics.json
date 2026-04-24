@@ -33,6 +33,7 @@
   "217-contains-duplicate": "arrays_and_hashing",
   "238-product-of-array-except-self": "prefix_sum",
   "242-valid-anagram": "arrays_and_hashing",
+  "253-meeting-rooms-ii": "heap",
   "278-first-bad-version": "binary_search",
   "283-move-zeroes": "two_pointers",
   "322-coin-change": "dynamic_programming",
